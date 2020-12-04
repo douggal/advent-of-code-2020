@@ -9,18 +9,18 @@ namespace Day02_PasswordPhilosophy
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(@"--- Day 2: Password Philosophy ---\n");
+            Console.WriteLine(@"--- Day 2: Password Philosophy ---");
 
             var rf = new ReadPuzzleInputFile();
             var inputFile = rf.ReadFile();
 
             // Puzzle 1:  how many passwords are valid?
             var countValidPasswords = Puzzle1(inputFile);
-            System.Console.WriteLine($"\n\nPuzzle 1 count of valid passwords is: {countValidPasswords}\n");
+            System.Console.WriteLine($"\n\nPuzzle 1 count of valid passwords is: {countValidPasswords}");
 
             // Puzzle 2:  new rules!  how many passwords are valid using new intrepreation of rule?
             countValidPasswords = Puzzle2(inputFile);
-            System.Console.WriteLine($"\n\nPuzzle 2 count of valid passwords is: {countValidPasswords}\n");
+            System.Console.WriteLine($"\n\nPuzzle 2 count of valid passwords is: {countValidPasswords}");
 
         }
 
@@ -48,12 +48,11 @@ namespace Day02_PasswordPhilosophy
                 if ((p[first] == findThisChar[0] || p[second] == findThisChar[0]) && notBoth)
                 {
                     countValidPasswords++;
-                    Console.WriteLine($"Valid: {tokens[0]} | {tokens[1]} | {tokens[2]}");
+                    //Console.WriteLine($"Valid: {tokens[0]} | {tokens[1]} | {tokens[2]}");
                 }
                 else
                 {
-                    Console.WriteLine($"Invalid: {tokens[0]} | {tokens[1]} | {tokens[2]}");
-
+                    //Console.WriteLine($"Invalid: {tokens[0]} | {tokens[1]} | {tokens[2]}");
                 }
 
             }
