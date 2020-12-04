@@ -8,7 +8,7 @@ namespace Day01_ReportRepair
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("--- Day 1: Report Repair ---");
 
             // Read the file into a List<int>  
             List<int> expenses = ReadExpensesFile();
