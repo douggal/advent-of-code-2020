@@ -13,7 +13,7 @@ namespace Day03_TobogganTrajectory
         {
             Console.WriteLine(@"--- Day 3: Toboggan Trajectory ---");
 
-            // to solve this puzzle I had what i thought was a good idea at the start.
+            // to solve this puzzle I had what i thought was a brilliant idea at the start.
             // I'd represent each row of the terrain map as a circular array of char
             // Since the terrain exends to the right indefinately it should work
             // In the end I felt I'd written more code than really should have needed
@@ -35,12 +35,40 @@ namespace Day03_TobogganTrajectory
             // and matches puzzle terrain
             // PrintMap(map); 
 
-            // puzzle slope is a given:  right = 3, down = 1
-
+            // puzzle 1 slope is a given:  right = 3, down = 1
             TallyOfResults results = Puzzle1(map, 3, 1);
             Console.WriteLine($"Puzzle 1 tree hits = {results.TreeHits}");
             Console.WriteLine($"Puzzle 1 open space hits = {results.OpenSpaceHits}");
             Console.WriteLine($"Puzzle 1 final value to the right = {results.ReachRight}");
+
+            // puzzle 2 test cases are
+            // Right 1, down 1.
+            // Right 3, down 1. (This is the slope you already checked.)
+            // Right 5, down 1.
+            // Right 7, down 1.
+            // Right 1, down 2.
+            // Puzzle1 will solve Puzzle2 just different input values for slope
+
+            int[,] testCases = new int[,] { { 1, 1 }, { 3, 1 }, { 5, 1 }, { 7, 1 }, { 1, 2 } };
+
+            List<TallyOfResults> resultsp2 = new List<TallyOfResults>();
+
+            for (int i = 0; i < 5; i++)
+            {
+                results = Puzzle1(map, testCases[i, 0], testCases[i, 1]);
+                Console.WriteLine($"Puzzle 2 test run {i} slope = ({testCases[i, 0]},{testCases[i, 1]}): tree hits = {results.TreeHits}");
+                Console.WriteLine($"Puzzle 2 test run {i}: open space hits = {results.OpenSpaceHits}");
+                Console.WriteLine($"Puzzle 2 test run {i}: final value to the right = {results.ReachRight}");
+
+                resultsp2.Add(results);
+            }
+
+            double totalTreeHits = 1;  // i.e., init at 1:  1 multiplied by another number = other number
+            foreach (var item in resultsp2)
+            {
+                totalTreeHits *= item.TreeHits;
+            }
+            Console.WriteLine($"Puzzle 2 product of treeHits for each run = {totalTreeHits}");
 
         }
 
@@ -55,23 +83,25 @@ namespace Day03_TobogganTrajectory
 
             TallyOfResults r = new TallyOfResults();
 
-            do
+            x += right;
+            y += down;
+            while (y <= map.Count - 1)
             {
-                x += right;
-                y += down;
                 if (map[y].GetValueAt(x) == tree)
                 {
                     treeHits += 1;
-                    System.Console.Write("hit ");
+                    //System.Console.Write("hit ");
                 }
                 else
                 {
                     openHits += 1;
-                    System.Console.Write("mis ");
+                    //System.Console.Write("mis ");
                 }
                 //System.Console.WriteLine($"{x},{y}");  // for debug
+                x += right;
+                y += down;
 
-            } while (y + down <= map.Count - 1);
+            }
 
             r.TreeHits = treeHits;
             r.OpenSpaceHits = openHits;

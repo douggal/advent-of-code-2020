@@ -8,4 +8,5 @@ My solution to each day's puzzles is in its own folder.  Programming language an
 
 1. Day 1:  Report Repair. (C# and .NET Core, Console app, Visual Studio Code)
 2. Day 2:  Password Philosophy (C# and .NET Core, Console app, VS Code)
-3. 
+3. Day 3:  Toboggan Trajectory (C# and .NET Core, Console app, VS Code)
+4. Day 4:  
