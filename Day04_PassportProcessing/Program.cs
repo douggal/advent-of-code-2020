@@ -21,10 +21,15 @@ namespace Day04_PassportProcessing
             {
                 if (passport.IsComplete())
                 {
-                    countValidPassports += 1;
+                    if (passport.IsValidBirthYr() && passport.IsValidIssueYr()
+                        && passport.IsValidExpirationYr() && passport.IsValidHeight() && passport.IsValidHairColor() && passport.IsValidEyeColor() && passport.IsValidPassportID())
+                    {
+                        countValidPassports += 1;
+                    }
                 }
+                // System.Console.WriteLine($"Is valid hgt {passport.IsValidHeight()}");
                 System.Console.WriteLine($"Passport complete?  {passport.IsComplete()}");
-                System.Console.WriteLine($"Count of passport fields {passport.PassportItems.Count}");
+                // System.Console.WriteLine($"Count of passport fields {passport.PassportItems.Count}");
                 foreach (KeyValuePair<string, string> kvp in passport.PassportItems)
                 {
                     Console.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
