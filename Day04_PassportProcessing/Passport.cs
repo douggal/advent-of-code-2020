@@ -24,14 +24,38 @@ namespace Day04_PassportProcessing
 
         public bool IsComplete()
         {
+            var missingFields = false;  // flag false if any required fields are missing
+            var result = false;
+            var count = 0;  // count of required fields found in this passport
+
             foreach (var f in RequiredPassportFields)
             {
-                if (f == "")
+                if (!_passportItems.ContainsKey(f) || _passportItems[f] == "")
                 {
-                    return false;
+                    missingFields = true;
+                }
+                else
+                {
+                    count += 1;
                 }
             }
-            return true;
+
+            // if this passport contains all the required fields then it is complete:  return true
+            if (!missingFields && count == RequiredPassportFields.Count)
+            {
+                result = true;
+            }
+
+            // hack:  if the only missing field (missing or empty string) is country code "cid" then call it complete: return true
+            if (!_passportItems.ContainsKey("cid") && count == RequiredPassportFields.Count - 1)
+            // || (count == RequiredPassportFields.Count
+            //    && !missingFields
+            //    && string.IsNullOrWhiteSpace(_passportItems["cid"])))
+            {
+                result = true;
+            }
+
+            return result;
         }
 
     }
