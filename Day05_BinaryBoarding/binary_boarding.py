@@ -2,7 +2,6 @@
 
 import math
 
-
 def binary_space_part(seat, min, max):
 
     low = min
@@ -29,16 +28,20 @@ def binary_space_part(seat, min, max):
             #print(low, high, sep=' to ')
 
 
-fn = "PuzzleInputDemo.txt"
+fn = "PuzzleInput.txt"
 row_max = 127
 col_max = 7
 row = 0
 col = 0
+seat_id_list = []
 
 with open(fn) as f:
     for seat in f:
         row = binary_space_part(seat[:7], 0, row_max)
         print(seat.strip(), 'row = ', row, end = ' ')
-        col = binary_space_part(seat[8:], 0, col_max)
-        print('col = ', col)
+        col = binary_space_part(seat[7:], 0, col_max)
+        print('col = ', col, end=' ')
+        seat_id_list.append(row*8+col)
+        print('Seat ID = ', seat_id_list[-1])
 
+print('Seat ID max ', max(seat_id_list))
