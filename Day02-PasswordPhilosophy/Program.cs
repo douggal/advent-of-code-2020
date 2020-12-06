@@ -9,6 +9,9 @@ namespace Day02_PasswordPhilosophy
     {
         static void Main(string[] args)
         {
+            // Advent of Code 2020  Day 2 Puzzle  https://adventofcode.com
+
+
             Console.WriteLine(@"--- Day 2: Password Philosophy ---");
 
             var rf = new ReadPuzzleInputFile();
