@@ -1,4 +1,4 @@
-#   Advent of Code 2020  Day 4 Puzzle Binary Boarding https://adventofcode.com
+#   Advent of Code 2020  Day 5 Puzzle Binary Boarding https://adventofcode.com
 
 import math
 

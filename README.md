@@ -11,4 +11,5 @@ My solution to each day's puzzles is in its own folder.  Programming language an
 3. Day 3:  Toboggan Trajectory (C# and .NET Core, Console app, VS Code)
 4. Day 4:  Passport Processing (C# and .NET Core, Console app, VS Code)
 5. Day 5:  Binary Boarding (Python)
-6. Day 6:  
+6. Day 6:  Custom Customs (Python)
+7. Day 7:  
