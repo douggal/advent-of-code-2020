@@ -44,4 +44,13 @@ with open(fn) as f:
         seat_id_list.append(row*8+col)
         print('Seat ID = ', seat_id_list[-1])
 
+# Part 1 of the Day 5 puzzle:
 print('Seat ID max ', max(seat_id_list))
+
+# Part 2 of the Day 5 puzzle, find the empty seat:
+all_possible_seats = list(range(1,max(seat_id_list)))
+for n in all_possible_seats:
+    if n in seat_id_list:
+        print('Seat taken!', n)
+    else:
+        print('**Empty seat: ', n, sep = ' ')
