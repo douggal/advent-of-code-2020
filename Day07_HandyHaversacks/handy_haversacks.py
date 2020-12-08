@@ -10,7 +10,7 @@ print('Advent of Code 2020')
 print('--- Day 7: Handy Haversacks ---')
 print()
 
-file_name = "PuzzleInput.txt"
+file_name = "PuzzleInputDemo.txt"
 sqls = "PuzzleInputSQLs.sql"
 
 with open(sqls, 'w') as output:

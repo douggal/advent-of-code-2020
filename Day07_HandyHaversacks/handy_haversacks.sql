@@ -48,21 +48,93 @@ begin
 end
 
 --select 'Part 1 Day 7 Puzzle list possible containers of ''shiny gold'''
-select parent from #owt group by parent
+select parent from #owt --group by parent
 
 select * from #owt
 
 
-select parent
-from #owt
-where parent in (
-  select x.parent
-  from luggage_rules x
-  where x.child = '-' 
-)
+-- Part 2:  how many bags must my shiny gold bag contain?
+-- given a parent node, hit every node in its tree and count up the bag count
+set nocount on
 
-/* ref: https://stackoverflow.com/questions/14274942/sql-server-cte-and-recursion-example */
+drop table #bag_totals
+drop table #children
+drop table #owt2
+drop table #bag_totals_by_parent
 
+select parent, child, bag_count
+ into #children
+from luggage_rules
+where parent = 'shiny_gold'
+
+select bag_count, child
+  into #bag_totals   --bag_totals = 1 row for each bag count by bag color
+from luggage_rules
+where parent = 'shiny_gold'
+
+declare @child_count smallint
+declare @this_child varchar(25)
+declare @this_parent varchar(25)
+
+select @child_count = count(*) from #children
+
+--bag count total per parent
+select parent, sum(bag_count) as bag_total
+  into #bag_totals_by_parent
+from luggage_rules a
+where 1=1
+group by a.parent
+
+declare @bagtot smallint
+declare @loopctr SMALLINT
+select @loopctr = 0
+
+while @child_count > 0
+begin
+    select top 1 @this_child = child, @this_parent = parent
+    from #children
+
+    delete from #children where child = @this_child and @this_parent = parent
+
+      select @bagtot = bag_total
+      from #bag_totals_by_parent
+      where parent = @this_child
+
+      insert into #bag_totals
+      select bag_count*@bagtot, child
+      from luggage_rules
+      where parent = @this_parent
+
+    insert into #children
+    select parent, child, bag_count
+    from luggage_rules
+    where parent = @this_parent
+    and child != '-'
+
+    select @child_count = count(*)  from #children
+
+    select @loopctr = @loopctr + 1
+    if @loopctr > 1e6  return
+
+end
+
+/* fail! 
+
+Msg 220, Level 16, State 1, Line 59
+Arithmetic overflow error for data type smallint, value = 32768.
+Msg 220, Level 16, State 1, Line 59
+Arithmetic overflow error for data type smallint, value = 32768.
+
+*/
+
+--select 'Part 2 Day 7 Puzzle'
+select * from #bag_totals
+
+select sum(bag_count) as bag_total
+from #bag_totals
+
+sp_who2 'active'
+kill 72
 
 
 /* data */
@@ -82,6 +154,16 @@ insert into luggage_rules values ('vibrant_plum', 5, 'faded_blue')
 insert into luggage_rules values ('vibrant_plum', 6, 'dotted_black')
 insert into luggage_rules values ('faded_blue', 0, '-')
 insert into luggage_rules values ('dotted_black', 0, '-')
+
+/* demo 2 */
+insert into luggage_rules values ('shiny_gold', 2, 'dark_red')
+insert into luggage_rules values ('dark_red', 2, 'dark_orange')
+insert into luggage_rules values ('dark_orange', 2, 'dark_yellow')
+insert into luggage_rules values ('dark_yellow', 2, 'dark_green')
+insert into luggage_rules values ('dark_green', 2, 'dark_blue')
+insert into luggage_rules values ('dark_blue', 2, 'dark_violet')
+insert into luggage_rules values ('dark_violet', 0, '-')
+
 
 select count(*) from luggage_rules
 
