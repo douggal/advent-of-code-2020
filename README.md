@@ -12,4 +12,5 @@ My solution to each day's puzzles is in its own folder.  Programming language an
 4. Day 4:  Passport Processing (C# and .NET Core, Console app, VS Code)
 5. Day 5:  Binary Boarding (Python)
 6. Day 6:  Custom Customs (Python)
-7. Day 7:  
+7. Day 7:  Handy Haversacks (Python for ETL and T-SQL to solve)
+
