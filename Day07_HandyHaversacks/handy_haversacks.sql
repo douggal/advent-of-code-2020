@@ -8,7 +8,8 @@ drop table luggage_rules
 create table luggage_rules (
     parent varchar(25) not null,
     bag_count smallint null,
-    child varchar(25) null
+    child varchar(25) null,
+    node_id int not null identity(0, 1)
 )
 
 
@@ -61,9 +62,17 @@ drop table #bag_totals
 drop table #children
 drop table #owt2
 drop table #bag_totals_by_parent
+drop table #children
 
-select parent, child, bag_count
- into #children
+create table #children (
+      parent varchar(25) not null,
+    bag_count smallint null,
+    child varchar(25) null,
+    node_id int not null
+)
+
+insert into #children (parent, child, bag_count, node_id)
+select parent, child, bag_count, node_id
 from luggage_rules
 where parent = 'shiny_gold'
 
@@ -85,31 +94,44 @@ from luggage_rules a
 where 1=1
 group by a.parent
 
+declare @this_node_id int
+declare @cnt smallint
+declare @this_bag_count smallint
 declare @bagtot smallint
 declare @loopctr SMALLINT
 select @loopctr = 0
 
+
 while @child_count > 0
 begin
-    select top 1 @this_child = child, @this_parent = parent
+    select top 1 @this_child = child, @this_parent = parent, @this_node_id = node_id, @this_bag_count= bag_count
     from #children
+    --where
 
-    delete from #children where child = @this_child and @this_parent = parent
+    delete from #children where node_id = @this_node_id --child = @this_child and @this_parent = parent
 
       select @bagtot = bag_total
       from #bag_totals_by_parent
       where parent = @this_child
 
-      insert into #bag_totals
-      select bag_count*@bagtot, child
-      from luggage_rules
-      where parent = @this_parent
+      select @cnt = @this_bag_count
+      while @cnt > 0
+      begin
+        insert into #bag_totals
+        select bag_count*@bagtot, child
+        from luggage_rules
+        where parent = @this_child
 
-    insert into #children
-    select parent, child, bag_count
+        select @cnt = @cnt -1
+      end
+
+    insert into #children (parent, child, bag_count, node_id)
+    select parent, child, bag_count, node_id
     from luggage_rules
-    where parent = @this_parent
+    where parent = @this_child --and node_id != @this_node_id
     and child != '-'
+
+select * from #children
 
     select @child_count = count(*)  from #children
 
@@ -117,15 +139,6 @@ begin
     if @loopctr > 1e6  return
 
 end
-
-/* fail! 
-
-Msg 220, Level 16, State 1, Line 59
-Arithmetic overflow error for data type smallint, value = 32768.
-Msg 220, Level 16, State 1, Line 59
-Arithmetic overflow error for data type smallint, value = 32768.
-
-*/
 
 --select 'Part 2 Day 7 Puzzle'
 select * from #bag_totals
