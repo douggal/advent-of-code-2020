@@ -16,12 +16,11 @@ drop table #parents
 drop table #owt
 
 select parent
-  into #parents
+ into #parents
 from luggage_rules
 where child = 'shiny_gold'
 
 select parent into #owt from #parents
-
 
 declare @parent_count smallint
 declare @this_parent varchar(25)
@@ -37,19 +36,33 @@ begin
     select parent
     from luggage_rules
     where child = @this_parent
-    -- and not exists (
-    --     select x.parent
-    --     from #owt x
-    --     where x.parent = @this_parent
-    -- )
 
-    delete from #parents where parent = @this_parent
+    insert into #parents
+    select parent
+    from luggage_rules
+    where child = @this_parent
+
+    delete from #parents where parent = @this_parent 
 
     select @parent_count = count(*)  from #parents
 end
 
 --select 'Part 1 Day 7 Puzzle list possible containers of ''shiny gold'''
-select * from #owt group by parent
+select parent from #owt group by parent
+
+select * from #owt
+
+
+select parent
+from #owt
+where parent in (
+  select x.parent
+  from luggage_rules x
+  where x.child = '-' 
+)
+
+/* ref: https://stackoverflow.com/questions/14274942/sql-server-cte-and-recursion-example */
+
 
 
 /* data */
@@ -151,6 +164,7 @@ insert into luggage_rules values ('bright_maroon', 4, 'bright_tan')
 insert into luggage_rules values ('bright_maroon', 2, 'posh_indigo')
 insert into luggage_rules values ('bright_maroon', 4, 'shiny_white')
 insert into luggage_rules values ('wavy_purple', 1, 'faded_beige')
+
 
 insert into luggage_rules values ('wavy_purple', 2, 'drab_salmon')
 insert into luggage_rules values ('wavy_purple', 3, 'mirrored_yellow')
