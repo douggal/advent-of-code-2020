@@ -11,7 +11,7 @@ print('Advent of Code 2020')
 print('--- Day 7: Handy Haversacks ---')
 print()
 
-file_name = "PuzzleInputDemo.txt"
+file_name = "PuzzleInput.txt"
 sqls = "PuzzleInputSQLs.sql"
 
 rule_id = 0
