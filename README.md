@@ -13,4 +13,6 @@ My solution to each day's puzzles is in its own folder.  Programming language an
 5. Day 5:  Binary Boarding (Python)
 6. Day 6:  Custom Customs (Python)
 7. Day 7:  Handy Haversacks (Python for ETL and T-SQL to solve)
-
+* Abandoned Day 7 Part 2 - could not work out the T-SQL solution to calculate correct answer.  If I have time I'll return an redo part 2 in Python or C#.
+8. Day 8:  Handheld Halting (Python)
+9. Day 9:  
