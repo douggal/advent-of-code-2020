@@ -5,6 +5,22 @@
 import re
 import collections
 
+class Accumulator:
+    total = 0
+    N = 0
+
+    def __init__(self, value):
+        self.total = value
+        self.N = 0
+
+    def ToString(self):
+        str(self.total)
+
+    def AddValue(self, value):
+        self.total += value
+        self.N += 1
+
+
 
 print('Advent of Code 2020')
 print('--- Day 8: Handheld Halting ---')
@@ -13,7 +29,7 @@ print()
 fn = "PuzzleInput.txt"
 prg = []
 instr=[]  # 0=insstruction, 1=value
-a = 0 # Accumulator(0)
+a = Accumulator(0)
 i = 0 # instr pointer 
 o = [] # list of instruction pointer previous values
 c = 0 # counter
@@ -29,13 +45,13 @@ with open(fn) as f:
             prg.append(new_instr)
 
 while True:
-    prev_acc_val = a
+    prev_acc_val = a.total
     # carry out instr
     o.append(i)
     if prg[i][0] == 'nop':
         i += 1
     elif prg[i][0] == 'acc':
-        a += prg[i][1]
+        a.AddValue(prg[i][1])
         i += 1
     elif prg[i][0] == 'jmp':
         i += prg[i][1]
