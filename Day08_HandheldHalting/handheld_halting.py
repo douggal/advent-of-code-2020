@@ -26,8 +26,6 @@ with open(fn) as f:
             tmp = re.split(' +', line)
             new_instr.append(tmp[0].strip())
             new_instr.append(int(tmp[1].strip()))
-            new_instr.append(0)
-            new_instr.append(0)
             prg.append(new_instr)
 
 while True:
