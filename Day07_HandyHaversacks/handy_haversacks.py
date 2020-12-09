@@ -1,5 +1,6 @@
 #   Advent of Code 2020  Day 7 Handy Haversacks https://adventofcode.com
 #   Created 12/07/2020
+#   Refactored code on 12/8/2020 to get part 2 solution
 
 import re
 import collections
@@ -12,6 +13,9 @@ print()
 
 file_name = "PuzzleInputDemo.txt"
 sqls = "PuzzleInputSQLs.sql"
+
+rule_id = 0
+seq_id = 0
 
 with open(sqls, 'w') as output:
     with open(file_name) as f:
@@ -32,10 +36,13 @@ with open(sqls, 'w') as output:
             #sys.exit()
 
             key = l.pop(0)
+            rule_id += 1   # rule ID number
+            seq_id =0      # number each component of rule together the rule ID and seq ID form a primary key
             while len(l) > 0:
                 v = l.pop(0)
                 child = l.pop(0)
-                sql = "insert into luggage_rules values ('" + key.strip() + "', " + v.strip() + ", '" + child.strip() + "')"
+                seq_id += 1
+                sql = "insert into luggage_rules values (" + str(rule_id) + "," + str(seq_id) + ",'" + key.strip() + "', " + v.strip() + ", '" + child.strip() + "')"
                 print(sql)
                 output.write(sql + '\n')
 
