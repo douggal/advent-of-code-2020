@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-
+using System.Numerics;
 
 namespace Day09_EncodingError
 {
@@ -13,10 +13,10 @@ namespace Day09_EncodingError
             LinesRead = 0;
         }
 
-        public List<double> ReadFile()
+        public List<BigInteger> ReadFile()
         {
             string line;
-            var lines = new List<double>();
+            var lines = new List<BigInteger>();
 
             using (StreamReader file = new StreamReader(@"PuzzleInput.txt"))
             {
@@ -24,7 +24,7 @@ namespace Day09_EncodingError
                 {
                     if (line.Trim().Length > 0)
                     {
-                        lines.Add(double.Parse(line.Trim()));
+                        lines.Add(BigInteger.Parse(line.Trim()));
                     }
                 }
             }
