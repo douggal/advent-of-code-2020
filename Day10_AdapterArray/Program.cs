@@ -21,21 +21,20 @@ namespace Day10_AdapterArray
 
             Console.WriteLine($"Read input file. {rf.LinesRead} lines read in.");
 
-            List<int> testChain;
+            AdapterChain candidateChain;
 
-            List<StringBuilder> triedTheseChains = new List<StringBuilder>();
+            List<StringBuilder> deadEndChains = new List<StringBuilder>();
 
             adapters.Sort();  // sort the adapter list ascending
 
 
             // algorithm:  Brute Force!
-            // check everything until first valid chain of adapters is found or we run out of adapter chains to check
-
-            testChain = new List<int>();
-            testChain.Add(0); // always start at 0
+            // check everything and build up a list of valid chains until we find a complete chain from wall to device.
+            candidateChain = new AdapterChain();
+            candidateChain.Chain.Add(0); // always start at 0
 
             bool testComplete = false;
-            int thisAdapter = 0;  // index of this adapter in list of adapters
+            int thisAdapter = 0;  // start at the wall always, add index of this adapter in list of adapters
             bool foundChain = false;
             List<int> next3;
 
@@ -57,12 +56,12 @@ namespace Day10_AdapterArray
                     for (i = 0; i < next3.Count; i++)
                     {
                         var tmpChain = new List<int>();
-                        for (int j = 0; j < testChain.Count; j++)
+                        for (int j = 0; j < candidateChain.Chain.Count; j++)
                         {
-                            tmpChain.Add(testChain[j]);
+                            tmpChain.Add(candidateChain.Chain[j]);
                         }
                         tmpChain.Add(next3[i]);
-                        if (IsThisANewChain(triedTheseChains, tmpChain))
+                        if (IsThisANewChain(deadEndChains, tmpChain))
                         {
                             addThisItem = i;
                             break;
@@ -70,7 +69,7 @@ namespace Day10_AdapterArray
                     }
                     if (i < next3.Count)
                     {
-                        testChain.Add(next3[addThisItem]);
+                        candidateChain.Chain.Add(next3[addThisItem]);
                     } else
                     {
                         fail = true;
@@ -79,26 +78,24 @@ namespace Day10_AdapterArray
 
                 if (fail)
                 {
-                    AddDeadEnd(triedTheseChains, testChain);
+                    // add this test case to list of those tried.
+                    AddDeadEnd(deadEndChains, candidateChain);
                     testComplete = true;
                 }
 
 
             } while (!testComplete && thisAdapter < adapters.Count);
 
-            if (testChain.Count >= adapters.Count)
+            if (candidateChain.Chain.Count == adapters.Count+1)  // candidate chain will include wall +1 for items count.
             {
                 foundChain = true;
-            }
-            else
-            {
-                // add this test case to list of those tried.
-                AddDeadEnd(triedTheseChains, testChain);
             }
 
             if (foundChain)
             {
                 Console.WriteLine($"Found chain");
+
+                PrintChainToConsole(candidateChain);
             }
             else
             {
@@ -106,14 +103,30 @@ namespace Day10_AdapterArray
             }
 
 
-            Console.WriteLine("Done.  Press any key to exit");
+            Console.WriteLine("Done.");
+            Console.WriteLine("Press any key to exit");
             Console.ReadKey();
+        }
 
+        private static void PrintChainToConsole(AdapterChain candidateChain)
+        {
+            // print chain
+            for (int i = 0; i < candidateChain.Chain.Count; i++)
+            {
+                if ( i < candidateChain.Chain.Count-1)
+                {
+                    Console.Write($"{candidateChain.Chain[i]},");
+                }
+                else
+                {
+                    Console.WriteLine($"{candidateChain.Chain[i]}");
+                }
+            }
         }
 
         private static bool IsThisANewChain(List<StringBuilder> triedTheseChains, List<int> tmpChain)
         {
-            var result = false;
+            var result = true;
             var tChain = new StringBuilder();
             for (int i = 0; i < tmpChain.Count; i++)
             {
@@ -122,22 +135,23 @@ namespace Day10_AdapterArray
 
             foreach (var item in triedTheseChains)
             {
-                if (item.ToString() == tChain.ToString() ) {
-                    result = true;
+                if (String.Compare(item.ToString(), tChain.ToString()) == 0 ) {
+                    result = false;  // not a new chain it's one we have already tried out.
+                    break;
                 }
             }
             return result;
         }
 
-        private static void AddDeadEnd(List<StringBuilder> triedTheseChains, List<int> testChain)
+        private static void AddDeadEnd(List<StringBuilder> triedTheseChains, AdapterChain testChain)
         {
 
             triedTheseChains.Add(new StringBuilder());
             var idx = triedTheseChains.Count - 1;
 
-            for (int i = 0; i < testChain.Count; i++)
+            for (int i = 0; i < testChain.Chain.Count; i++)
             {
-                triedTheseChains[idx].Append(testChain[idx].ToString());
+                triedTheseChains[idx].Append(testChain.Chain[i].ToString());
             }
             return;
         }
@@ -145,9 +159,10 @@ namespace Day10_AdapterArray
         private static List<int> FindNext3(List<int> adapters, int start)
         {
             var result = new List<int>();
-            int end = start + 3;
+            int end = start + 2;
 
-            for (int i = 0; i < adapters.Count && i < end; i++)
+            // start is one ahead of 0 based list count, subtract 1 to get index number
+            for (int i = start-1; i < adapters.Count && i <= end; i++)
             {
                 result.Add(adapters[i]);
             }

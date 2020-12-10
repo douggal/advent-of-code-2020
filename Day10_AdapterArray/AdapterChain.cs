@@ -16,6 +16,7 @@ namespace Day10_AdapterArray
         public AdapterChain()
         {
             Complete = false;
+            Chain = new List<int>();
         }
 
     }
