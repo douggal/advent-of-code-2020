@@ -15,5 +15,6 @@ My solution to each day's puzzles is in its own folder.  Programming language an
 7. Day 7:  Handy Haversacks (Python for ETL, Macos, and T-SQL, an Azure SQL db, Azure Data Studio to solve)
 * Abandoned Day 7 Part 2 - could not work out the T-SQL solution to calculate correct answer.  If I have time I'll return an redo part 2 in Python or C#.
 8. Day 8:  Handheld Halting (Python, Visual Studio Code, Windows)
-9. Day 9:  Encoding Error (C# .NET Core, Console app, Visual Studio, Windows env)
-10. Day 10: 
+9. Day 9:  Encoding Error (C# .NET Core, Console app, Visual Studio 2019, Windows)
+10. Day 10: Adapter Array (C# .NET Core, Console app, Visual Studio 2019, Windows)
+11.
