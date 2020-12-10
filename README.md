@@ -17,4 +17,7 @@ My solution to each day's puzzles is in its own folder.  Programming language an
 8. Day 8:  Handheld Halting (Python, Visual Studio Code, Windows)
 9. Day 9:  Encoding Error (C# .NET Core, Console app, Visual Studio 2019, Windows)
 10. Day 10: Adapter Array (C# .NET Core, Console app, Visual Studio 2019, Windows)
+
+* Day 10 Part 1 - pass, Part 2 - fail. I attempted Part 2, but no go and did not compute the right answer.
+
 11.

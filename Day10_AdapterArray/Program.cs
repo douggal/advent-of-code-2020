@@ -106,6 +106,47 @@ namespace Day10_AdapterArray
             }
 
 
+
+
+            ///////////////////////////////////////////////
+            // part 2:  how many valid combos are there?
+            Console.WriteLine($"\nPart 2.");
+
+            // algorthm:  at each node in the chain there are only so many valid adapters to choose from.
+            //  record how many are available.
+
+            List<int> validCombos = new List<int>();
+
+            next3.Clear();
+
+            adapters.Insert(0, 0); // add wall outlet.
+
+            // build a chain one element at a time
+           for (thisAdapter = 0; thisAdapter < adapters.Count; thisAdapter++) 
+           { 
+                next3 = FindNext3a(adapters, thisAdapter);  // List<int> with 0 to 3 
+
+                if (next3.Count > 0)  validCombos.Add(next3.Count);  // last item count will be 0 choices to device itself
+
+            };
+
+            double p = 1d;
+            for (int i = 0; i < validCombos.Count; i++)
+            {
+                if (i < validCombos.Count - 1)
+                {
+                    Console.Write($"{validCombos[i]},");
+                }
+                else
+                {
+                    Console.WriteLine($"{validCombos[i]}");
+                }
+
+                p *= validCombos[i];
+
+            }
+            Console.WriteLine($"Count of valid adapter combos is {p}");
+
             Console.WriteLine("Done.");
             Console.WriteLine("Press any key to exit");
             Console.ReadKey();
@@ -201,10 +242,30 @@ namespace Day10_AdapterArray
             int end = start + 2;
 
             // start is one ahead of 0 based list count, subtract 1 to get index number
-            for (int i = start-1; i < adapters.Count && i <= end; i++)
+            for (int i = start-1; i < adapters.Count && i < end; i++)
             {
                 result.Add(adapters[i]);
             }
+
+            result.Sort();
+
+            return result;
+        }
+
+        private static List<int> FindNext3a(List<int> adapters, int startIdx)
+        {
+            var result = new List<int>();
+            int end = startIdx + 3;
+
+            // start is one ahead of 0 based list count, subtract 1 to get index number
+            for (int i = startIdx+1; i < adapters.Count && i < end; i++)
+            {
+                var d = adapters[i] - adapters[startIdx];
+                if (d >= 1 && d <= 3) result.Add(adapters[i]);
+            }
+
+            result.Sort();
+
             return result;
         }
     }
