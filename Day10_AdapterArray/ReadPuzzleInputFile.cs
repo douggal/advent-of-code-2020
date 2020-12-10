@@ -17,7 +17,7 @@ namespace Day10_AdapterArray
             string line;
             var lines = new List<int>();
 
-            using (StreamReader file = new StreamReader(@"PuzzleInputTest.txt"))
+            using (StreamReader file = new StreamReader(@"PuzzleInput.txt"))
             {
                 while ((line = file.ReadLine()) != null)
                 {

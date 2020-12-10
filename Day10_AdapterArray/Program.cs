@@ -96,6 +96,9 @@ namespace Day10_AdapterArray
                 Console.WriteLine($"Found chain");
 
                 PrintChainToConsole(candidateChain);
+
+                FindDistribution(candidateChain);
+
             }
             else
             {
@@ -108,8 +111,43 @@ namespace Day10_AdapterArray
             Console.ReadKey();
         }
 
+        private static void FindDistribution(AdapterChain candidateChain)
+        {
+            Dictionary<int, int> dist = new Dictionary<int, int> { { 1, 0 }, { 2, 0 }, { 3, 0 } };
+
+            var d = 0;
+            var c = 0; // for debug count items incl in distro should equal #items in chain-1 + 1 additional item the device itself
+
+            // for each item find joltage diff between it and its previous item
+            for (int i = 1; i < candidateChain.Chain.Count; i++)
+            {
+                c += 1;
+                d = candidateChain.Chain[i] - candidateChain.Chain[i - 1];
+                if (d > 3 || d < 1) { Console.WriteLine("Error"); }
+                else
+                {
+                    dist[d] = dist[d] + 1;
+                }
+            }
+            c += 1;
+            dist[3] = dist[3] + 1;  // add diff between device and last adapter in the chain.  it's always +3
+
+            //print joltage distro
+            foreach (KeyValuePair<int, int> entry in dist)
+            {
+                Console.WriteLine($"{entry.Key.ToString()}, diff {entry.Value.ToString()}");
+            }
+
+            // print product of +1 count by +3 count
+            Console.WriteLine($"Product of +1 count x +3 count is {dist[1]} * {dist[3]} = {dist[1]*dist[3]}.  Items in distro is {c}");
+            return;
+        }
+
         private static void PrintChainToConsole(AdapterChain candidateChain)
         {
+
+            Console.WriteLine($"Item count: {candidateChain.Chain.Count}");
+
             // print chain
             for (int i = 0; i < candidateChain.Chain.Count; i++)
             {
@@ -121,6 +159,7 @@ namespace Day10_AdapterArray
                 {
                     Console.WriteLine($"{candidateChain.Chain[i]}");
                 }
+
             }
         }
 
