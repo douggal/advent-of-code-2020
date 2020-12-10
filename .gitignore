@@ -21,6 +21,11 @@
 # Local History for Visual Studio Code
 .history/
 
+# Python:  Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
