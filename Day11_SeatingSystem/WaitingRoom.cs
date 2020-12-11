@@ -7,7 +7,7 @@ namespace Day11_SeatingSystem
     public class WaitingRoom
     {
 
-        List<RowOfSeats> _prevRoom;
+        List<RowOfSeats> _nextGenRoom;
 
         public bool HasChanged { get; set; }
 
@@ -60,10 +60,12 @@ namespace Day11_SeatingSystem
             var n = 0;
             foreach (var row in Room)
             {
-                Console.Write(String.Format("{0,2}: ", n));
+                Console.Write(String.Format("Row {0,2}: ", n));
                 foreach (var s in row.Row)
                 {
-                    Console.Write(String.Format("{0,3}", s.State));
+                    var d = CountSurroundings(s);
+                    //Console.Write(String.Format("{0} {1},", s.State, d['L']));
+                    Console.Write(String.Format("{0:-2}  ", s.State));
                 }
                 Console.WriteLine();
                 n++;
@@ -72,17 +74,31 @@ namespace Day11_SeatingSystem
 
         public void GenerateNext()
         {
-            CopyRoomToPrev();
+            CopyRoomToSwap();
+
             char new_status;
 
-            foreach (var r in Room)
+            foreach (RowOfSeats r in Room)
             {
-                foreach (var seat in r.Row)
+                foreach (Seat seat in r.Row)
                 {
                     new_status = ApplyRules(seat);
                     seat.State = new_status;
                 }
             };
+
+            SwapOut();
+
+            return;
+        }
+
+        public void SwapOut()
+        {
+            if (!(Room == null) && !(_nextGenRoom == null))
+            {
+                Room = _nextGenRoom;
+                _nextGenRoom = null;
+            }
 
             return;
         }
@@ -99,13 +115,13 @@ namespace Day11_SeatingSystem
 
             Dictionary<char, int> t = CountSurroundings(seat);
 
-            if (seat.State == 'L' && t['L'] == 0)
+            if (seat.State == 'L' && t['#'] == 0)
             {
                 // seat becomes occupied
                 seat.State = '#';
                 HasChanged = true;
             }
-            else if (seat.State == '#' && t['L'] >= 4)
+            else if (seat.State == '#' && t['#'] >= 4)
             {
                 // seat becomes empty
                 seat.State = 'L';
@@ -135,18 +151,15 @@ namespace Day11_SeatingSystem
             char stat;
             var r = 0;
             var c = 0;
-            foreach (var row in rows)
+            for (var i=0; i < rows.Length; i++)
             {
-                foreach (var col in cols)
+                // TODO: edge cases ??
+                r = seat_row + rows[i];
+                c = seat_col + cols[i];
+                if ((r >= 0 && r < Room.Count-1) && (c >= 0 && c < Room[0].Row.Count - 1))
                 {
-                    // TODO: edge cases ??
-                    r = seat_row + row;
-                    c = seat_col + col;
-                    if ((r >= 0 && r < Room.Count-1) && (c >= 0 && c < Room[0].Row.Count - 1))
-                    {
-                        stat = Room[r].Row[c].State;
-                        result[stat] += 1;
-                    }
+                    stat = Room[r].Row[c].State;
+                    result[stat] += 1;
                 }
             }
 
@@ -169,9 +182,9 @@ namespace Day11_SeatingSystem
             return n;
         }
 
-        public void CopyRoomToPrev()
+        public void CopyRoomToSwap()
         {
-            _prevRoom = new List<RowOfSeats>();
+            _nextGenRoom = new List<RowOfSeats>();
             RowOfSeats new_row;
 
             // build a waiting room...
@@ -184,7 +197,7 @@ namespace Day11_SeatingSystem
                     new_seat.State = seat.State;
                     new_row.Row.Add(new_seat);
                 }
-                _prevRoom.Add(new_row);
+                _nextGenRoom.Add(new_row);
             };
 
             return;
