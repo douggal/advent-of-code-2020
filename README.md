@@ -20,4 +20,5 @@ My solution to each day's puzzles is in its own folder.  Programming language an
 
 * Day 10 Part 1 - pass, Part 2 - fail. I attempted Part 2, but no go and did not compute the right answer.
 
-11.
+11. Day 11:  Seating System (C# .NET Core 3.1, Console app, VS 2019, Windows)
+
