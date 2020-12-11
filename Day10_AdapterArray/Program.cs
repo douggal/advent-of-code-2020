@@ -128,7 +128,15 @@ namespace Day10_AdapterArray
 
             count = CountPossibleConnections(adapters, 0);
 
-            Console.WriteLine($"Count of valid adapter combos is {count}");
+            if (count != 0)
+            {
+                Console.WriteLine($"Count of valid adapter combos is {count}");
+            }
+            else
+            {
+                Console.WriteLine($"Count of valid adapter combos is 0 - no valid path thru this list.");
+            }
+
 
             Console.WriteLine("Done.");
             Console.WriteLine("Press any key to exit");
@@ -139,9 +147,8 @@ namespace Day10_AdapterArray
 
         private static double CountPossibleConnections(List<int> adapters, int v)
         {
-
             double sum = 0;
-            Stack<int> s = new Stack<int>();
+            List<Node> nodes = new List<Node>();
 
             // v = starting index
             // get next up to 3 adapters in list, which is sorted ascending order.
@@ -150,40 +157,66 @@ namespace Day10_AdapterArray
                 var d = adapters[i] - adapters[v];  // adapter before the current one in the list
                 if (d >= 1 && d <= 3)
                 {
-                    s.Push(i);
+                    Node n = new Node(i, adapters[i]);
+                    nodes.Add(n);
                 }
             }
 
-            sum += s.Count;
-
-            if (s.Count == 0)
+            if (nodes.Count == 0)
             {
-                return 0;
+                return 0;  
             } 
             else
             {
-                while (s.Count > 0)
+                for (int nc = 0; nc < nodes.Count; nc++)
                 {
-                    var i = s.Pop();
-                    var t = CountPossibleConnections(adapters, i);
-                    if (t == 0 && adapters[i] != adapters[adapters.Count - 1])
+                    var t = CheckConnections(nodes[nc], adapters, nodes[nc].Index);
+                    if (t== 0 || nodes[nc].DeadEnd)
                     {
-                        return 0; 
-                    }
-                    else if ((t == 0 && adapters[i] == adapters[adapters.Count - 1]))
-                    {
-                        sum += t;
+                        //nodes.RemoveAt(nc);  //prune this path -
                     }
                     else
                     {
-                        return 0;
+                        nodes[nc].TotalConnectionCount += CountPossibleConnections(adapters, nodes[nc].Index);
                     }
+                }
+            }
+
+            foreach (var node in nodes)
+            {
+                if (!node.DeadEnd)
+                {
+                    sum += node.TotalConnectionCount;
                 }
             }
 
             return sum;
 
           }
+
+        private static int CheckConnections(Node node, List<int> adapters, int v)
+        {
+            var result = 0;
+            for (int i = v + 1; i < adapters.Count && i <= v + 3; i++)
+            {
+                var d = adapters[i] - adapters[v];  // adapter before the current one in the list
+                if (d >= 1 && d <= 3)
+                {
+                    result += 1;
+                }
+            }
+            node.ConnectionCount = result;
+
+            if (result == 0)
+            {
+                node.DeadEnd = true;
+            }
+            if (adapters.Count-1 == v)
+            {
+                node.EndOfChain = true;
+            }
+            return result;
+        }
 
         private static void FindDistribution(AdapterChain candidateChain)
         {
