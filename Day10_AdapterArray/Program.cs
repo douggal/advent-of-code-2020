@@ -122,11 +122,11 @@ namespace Day10_AdapterArray
             // start with highest rated item.
             // +1 for highest rated item.
 
-            var count = 0d;
+            double count;
 
             adapters.Insert(0, 0); // add the wall outlet
 
-            count += CountPossibleConnections(adapters, 1);  // 0 != wall outlet 
+            count = CountPossibleConnections(adapters, 0);
 
             Console.WriteLine($"Count of valid adapter combos is {count}");
 
@@ -139,33 +139,51 @@ namespace Day10_AdapterArray
 
         private static double CountPossibleConnections(List<int> adapters, int v)
         {
-            Queue<int> s = new Queue<int>();
-            double sum;
+
+            double sum = 0;
+            Stack<int> s = new Stack<int>();
 
             // v = starting index
             // get next up to 3 adapters in list, which is sorted ascending order.
-            for (int i = v+1; i < adapters.Count && i <= v+3; i++)  
+            for (int i = v + 1; i < adapters.Count && i <= v + 3; i++)
             {
                 var d = adapters[i] - adapters[v];  // adapter before the current one in the list
-                if (d >= 1 && d <= 3) s.Enqueue(i);
+                if (d >= 1 && d <= 3)
+                {
+                    s.Push(i);
+                }
             }
 
-            sum = s.Count;
+            sum += s.Count;
 
-            while (s.Count > 0)
+            if (s.Count == 0)
             {
-
-                var i = s.Dequeue();
-
-                Console.WriteLine($"{v}: {adapters[i]}");
-
-                sum += CountPossibleConnections(adapters, i);
-
-            };
+                return 0;
+            } 
+            else
+            {
+                while (s.Count > 0)
+                {
+                    var i = s.Pop();
+                    var t = CountPossibleConnections(adapters, i);
+                    if (t == 0 && adapters[i] != adapters[adapters.Count - 1])
+                    {
+                        return 0; 
+                    }
+                    else if ((t == 0 && adapters[i] == adapters[adapters.Count - 1]))
+                    {
+                        sum += t;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+            }
 
             return sum;
 
-        }
+          }
 
         private static void FindDistribution(AdapterChain candidateChain)
         {
