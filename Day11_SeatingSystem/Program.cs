@@ -14,10 +14,16 @@ namespace Day11_SeatingSystem
             var inputFile = @"PuzzleInputTest.txt";
 
             /*
-            The following rules are applied to every seat simultaneously:
-
-            If a seat is empty(L) and there are no occupied seats adjacent to it, 
-            the seat becomes occupied.
+             * I took an object oriented C# approach. Although verbose and not efficient of CPU 
+             * it is easier to write code by breaking out the problem into objects with properties and methods.
+             * 
+             * 
+             * The following rules are applied to every seat simultaneously:
+             * 
+             * If a seat is empty(L) and there are no occupied seats adjacent to it, 
+             * the seat becomes occupied.
+             * 
+             * 
             
             If a seat is occupied(#) and four or more seats adjacent to it are also occupied, 
             the seat becomes empty.
@@ -33,14 +39,31 @@ namespace Day11_SeatingSystem
 
             wr.InitializeRoom(inputFile);
 
-            Console.WriteLine("Room: ");
-            wr.PrintRoom();
-            Console.WriteLine();
+            //Console.WriteLine("Room: ");
+            //wr.PrintRoom();
+            //Console.WriteLine();
 
-            // run 1 gen
-            wr.GenerateNext();
-            wr.PrintRoom();
-            Console.WriteLine();
+            //// run 1 gen
+            //wr.GenerateNext();
+            //wr.PrintRoom();
+            //Console.WriteLine();
+
+            // run 9 more gens
+            var ngens = 100;
+            var prevChgState = false;
+            for (int i = 0; i < ngens; i++)
+            {
+                Console.WriteLine($"Generation {i}:");
+                prevChgState = wr.HasChanged;
+                wr.GenerateNext();
+                if (prevChgState != wr.HasChanged)
+                {
+                    wr.PrintRoom();
+                    Console.WriteLine($"{wr.HasChanged}");
+                }
+                //Console.WriteLine($"{wr.HasChanged}");
+            }
+            Console.WriteLine($"Count of occupied Seats {wr.CountOfOccupiedSeats()}\n\n");
 
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();

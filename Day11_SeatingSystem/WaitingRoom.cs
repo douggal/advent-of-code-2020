@@ -48,6 +48,7 @@ namespace Day11_SeatingSystem
                 r++;
                 c = 0;
             };
+            HasChanged = false;
 
             Console.WriteLine($"Read input file. {rf.LinesRead} lines read in.");
 
@@ -65,7 +66,7 @@ namespace Day11_SeatingSystem
                 {
                     var d = CountSurroundings(s);
                     //Console.Write(String.Format("{0} {1},", s.State, d['L']));
-                    Console.Write(String.Format("{0:-2}  ", s.State));
+                    Console.Write(String.Format("{0:1}", s.State));
                 }
                 Console.WriteLine();
                 n++;
@@ -77,19 +78,50 @@ namespace Day11_SeatingSystem
             CopyRoomToSwap();
 
             char new_status;
-
-            foreach (RowOfSeats r in Room)
+            var r = 0;
+            var c = 0;
+            foreach (RowOfSeats row in Room)
             {
-                foreach (Seat seat in r.Row)
+                foreach (Seat seat in row.Row)
                 {
                     new_status = ApplyRules(seat);
-                    seat.State = new_status;
+                    _nextGenRoom[r].Row[c].State = new_status;
+                    c++;
                 }
+                c = 0;
+                r++;
             };
+
+            HasChanged = CompareOldToNewRoom(_nextGenRoom);
 
             SwapOut();
 
             return;
+        }
+
+        private bool CompareOldToNewRoom(List<RowOfSeats> rm)
+        {
+            bool result = false;
+
+            // build a waiting room...
+            var r = 0;
+            var c = 0;
+            foreach (var row in Room)
+            {
+                foreach (var seat in row.Row)
+                {
+                    if (seat.State != rm[r].Row[c].State)
+                    {
+                        result = true;
+                        break;
+                    }
+                    c++;
+                }
+                c = 0;
+                r++;
+            };
+
+            return result;
         }
 
         public void SwapOut()
@@ -105,12 +137,12 @@ namespace Day11_SeatingSystem
 
         private char ApplyRules(Seat seat)
         {
-            char result;
+            char result = seat.State;
 
             if (seat.State == '.')
             {
                 //floor spot - no change
-                return seat.State;
+                return result; ;
             }
 
             Dictionary<char, int> t = CountSurroundings(seat);
@@ -118,29 +150,27 @@ namespace Day11_SeatingSystem
             if (seat.State == 'L' && t['#'] == 0)
             {
                 // seat becomes occupied
-                seat.State = '#';
-                HasChanged = true;
+                result = '#';
             }
             else if (seat.State == '#' && t['#'] >= 4)
             {
                 // seat becomes empty
-                seat.State = 'L';
-                HasChanged = true;
+                result = 'L';
             }
             else
             {
                 
             }
 
-            return seat.State;
+            return result;
         }
 
         private Dictionary<char, int> CountSurroundings(Seat seat)
         {
             var result = new Dictionary<char, int>();
-            result['L'] = 0;
-            result['.'] = 0;
-            result['#'] = 0;
+            result['L'] = 0;  // empty
+            result['.'] = 0;  // floor
+            result['#'] = 0;  // occupied
 
             var seat_row = seat.SeatNumber.Item1;
             var seat_col = seat.SeatNumber.Item2;
@@ -156,11 +186,29 @@ namespace Day11_SeatingSystem
                 // TODO: edge cases ??
                 r = seat_row + rows[i];
                 c = seat_col + cols[i];
-                if ((r >= 0 && r < Room.Count-1) && (c >= 0 && c < Room[0].Row.Count - 1))
+                if ((r >= 0 && r < Room.Count) && (c >= 0 && c < Room[0].Row.Count))
                 {
                     stat = Room[r].Row[c].State;
                     result[stat] += 1;
                 }
+                // do nothing if one or both off the gird.  no wrapping around here. 
+                //else if ((r < 0 || r >= Room.Count) && (c >= 0 && c < Room[0].Row.Count))
+                //{
+                //    // row is out of range but col (a row of seats) is Ok
+                //    stat = Room[seat_row].Row[c].State;
+                //    result[stat] += 1;
+                //}
+                //else if ((r >= 0 && r < Room.Count) && (c < 0 || c >= Room[0].Row.Count))
+                //{
+                //    // row is Ok, but col (row of seats) is out of range
+                //    stat = Room[r].Row[seat_col].State;
+                //    result[stat] += 1;
+                //}
+                else
+                {
+                    // do nothing both off the grid
+                }
+
             }
 
             return result;
@@ -173,7 +221,7 @@ namespace Day11_SeatingSystem
             { 
                 foreach (var s in row.Row)
                 {
-                    if (s.State == 'L')
+                    if (s.State == '#')
                     {
                         n++;
                     }
