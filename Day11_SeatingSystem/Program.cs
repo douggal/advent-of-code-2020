@@ -11,13 +11,42 @@ namespace Day11_SeatingSystem
 
             Console.WriteLine(@"--- Day 11: Seating System ---");
 
-            var rf = new ReadPuzzleInputFile();
-            var adapters = rf.ReadFile();
+            var inputFile = @"PuzzleInputTest.txt";
 
-            // adapters is a list of integers.  Each integer represents an adapter's jolts. 
-            //No other info is provided and adapters are known only by their postion or index in this list.
+            /*
+            The following rules are applied to every seat simultaneously:
 
-            Console.WriteLine($"Read input file. {rf.LinesRead} lines read in.");
+            If a seat is empty(L) and there are no occupied seats adjacent to it, 
+            the seat becomes occupied.
+            
+            If a seat is occupied(#) and four or more seats adjacent to it are also occupied, 
+            the seat becomes empty.
+            
+            Otherwise, the seat's state does not change.
+
+            Floor(.) never changes; seats don't move, 
+            and nobody sits on the floor.
+            */
+
+
+            WaitingRoom wr = new WaitingRoom();
+
+            wr.InitializeRoom(inputFile);
+
+            Console.WriteLine("Room: ");
+            wr.PrintRoom();
+            Console.WriteLine();
+
+            // run 1 gen
+            wr.GenerateNext();
+            wr.PrintRoom();
+            Console.WriteLine();
+
+            Console.WriteLine("Press any key to exit.");
+            Console.ReadKey();
         }
+
+
+
     }
 }

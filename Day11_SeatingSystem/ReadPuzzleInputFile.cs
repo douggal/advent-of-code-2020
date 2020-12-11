@@ -12,18 +12,18 @@ namespace Day11_SeatingSystem
             LinesRead = 0;
         }
 
-        public List<int> ReadFile()
+        public List<string> ReadFile(string fn)
         {
             string line;
-            var lines = new List<int>();
+            var lines = new List<string>();
 
-            using (StreamReader file = new StreamReader(@"PuzzleInputTest.txt"))
+            using (StreamReader file = new StreamReader(fn))
             {
                 while ((line = file.ReadLine()) != null)
                 {
                     if (line.Trim().Length > 0)
                     {
-                        lines.Add(int.Parse(line.Trim()));
+                        lines.Add(line.Trim());
                     }
                 }
             }
