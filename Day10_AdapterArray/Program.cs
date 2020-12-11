@@ -112,44 +112,59 @@ namespace Day10_AdapterArray
             // part 2:  how many valid combos are there?
             Console.WriteLine($"\nPart 2.");
 
+            // In part 2 adapters can be skipped over and not used. Goal is count total number of combos instead of using all the adapters.
+
             // algorthm:  at each node in the chain there are only so many valid adapters to choose from.
             //  record how many are available.
 
             List<int> validCombos = new List<int>();
 
-            next3.Clear();
+            // start with highest rated item.
+            // +1 for highest rated item.
 
-            adapters.Insert(0, 0); // add wall outlet.
+            var count = 0d;
 
-            // build a chain one element at a time
-           for (thisAdapter = 0; thisAdapter < adapters.Count; thisAdapter++) 
-           { 
-                next3 = FindNext3a(adapters, thisAdapter);  // List<int> with 0 to 3 
+            adapters.Insert(0, 0); // add the wall outlet
 
-                if (next3.Count > 0)  validCombos.Add(next3.Count);  // last item count will be 0 choices to device itself
+            count += CountPossibleConnections(adapters, 1);  // 0 != wall outlet 
 
-            };
-
-            double p = 1d;
-            for (int i = 0; i < validCombos.Count; i++)
-            {
-                if (i < validCombos.Count - 1)
-                {
-                    Console.Write($"{validCombos[i]},");
-                }
-                else
-                {
-                    Console.WriteLine($"{validCombos[i]}");
-                }
-
-                p *= validCombos[i];
-
-            }
-            Console.WriteLine($"Count of valid adapter combos is {p}");
+            Console.WriteLine($"Count of valid adapter combos is {count}");
 
             Console.WriteLine("Done.");
             Console.WriteLine("Press any key to exit");
             Console.ReadKey();
+        }
+
+
+
+        private static double CountPossibleConnections(List<int> adapters, int v)
+        {
+            Queue<int> s = new Queue<int>();
+            double sum;
+
+            // v = starting index
+            // get next up to 3 adapters in list, which is sorted ascending order.
+            for (int i = v+1; i < adapters.Count && i <= v+3; i++)  
+            {
+                var d = adapters[i] - adapters[v];  // adapter before the current one in the list
+                if (d >= 1 && d <= 3) s.Enqueue(i);
+            }
+
+            sum = s.Count;
+
+            while (s.Count > 0)
+            {
+
+                var i = s.Dequeue();
+
+                Console.WriteLine($"{v}: {adapters[i]}");
+
+                sum += CountPossibleConnections(adapters, i);
+
+            };
+
+            return sum;
+
         }
 
         private static void FindDistribution(AdapterChain candidateChain)
@@ -268,5 +283,7 @@ namespace Day10_AdapterArray
 
             return result;
         }
+
+
     }
 }
