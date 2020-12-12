@@ -6,18 +6,76 @@ namespace Day11_SeatingSystem
     {
         static void Main(string[] args)
         {
+
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+
             // Advent of Code 2020  Day 11 Seating System   https://adventofcode.com
             // 12/11/2020
 
             Console.WriteLine(@"--- Day 11: Seating System ---");
 
-            var rf = new ReadPuzzleInputFile();
-            var adapters = rf.ReadFile();
+            var inputFile = @"PuzzleInput.txt";
 
-            // adapters is a list of integers.  Each integer represents an adapter's jolts. 
-            //No other info is provided and adapters are known only by their postion or index in this list.
+            /*
+             * I took an object oriented C# approach. Although verbose and not efficient of CPU 
+             * it is easier to write code by breaking out the problem into objects with properties and methods.
+             * 
+             * 
+             * The following rules are applied to every seat simultaneously:
+             * 
+             * If a seat is empty(L) and there are no occupied seats adjacent to it, 
+             * the seat becomes occupied.
+             * 
+             * 
+            
+            If a seat is occupied(#) and four or more seats adjacent to it are also occupied, 
+            the seat becomes empty.
+            
+            Otherwise, the seat's state does not change.
 
-            Console.WriteLine($"Read input file. {rf.LinesRead} lines read in.");
+            Floor(.) never changes; seats don't move, 
+            and nobody sits on the floor.
+            */
+
+
+            WaitingRoom wr = new WaitingRoom();
+
+            wr.InitializeRoom(inputFile);
+
+            Console.WriteLine("Room: ");
+            wr.PrintRoom();
+            Console.WriteLine();
+
+            // run 1 gen
+            //wr.GenerateNext();
+            //wr.PrintRoom();
+            //Console.WriteLine();
+
+            // run 9 more gens
+            var ngens = 1000;
+            var prevChgState = false;
+            for (int i = 0; i < ngens; i++)
+            {
+                prevChgState = wr.HasChanged;
+                wr.GenerateNext();
+                if ((i > 0 && prevChgState != wr.HasChanged))
+                {
+                    Console.WriteLine($"Generation {i}:");
+                    wr.PrintRoom();
+                    //Console.WriteLine($"{wr.HasChanged}");
+                    Console.WriteLine($"Count of occupied Seats {wr.CountOfOccupiedSeats()}\n\n");
+
+                }
+                //Console.WriteLine($"{wr.HasChanged}");
+            }
+
+            Console.WriteLine($"Count of occupied Seats {wr.CountOfOccupiedSeats()}\n\n");
+
+            Console.WriteLine("Press any key to exit.");
+            Console.ReadKey();
         }
+
+
+
     }
 }
