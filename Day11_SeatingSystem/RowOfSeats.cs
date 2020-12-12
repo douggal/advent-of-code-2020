@@ -6,11 +6,11 @@ namespace Day11_SeatingSystem
 {
     public class RowOfSeats
     {
-        public List<Seat> Row { get; set; }
+        public List<Seat> ARowOfSeats { get; set; }
 
         public RowOfSeats()
         {
-            Row = new List<Seat>();
+            ARowOfSeats = new List<Seat>();
         }
     }
 }

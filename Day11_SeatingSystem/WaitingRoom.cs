@@ -13,10 +13,13 @@ namespace Day11_SeatingSystem
 
         public List<RowOfSeats> Room { get; set; }
 
+        public int VisibleOccupiedSeats { get; set; }
+
         public WaitingRoom()
         {
             HasChanged = true;
             Room = new List<RowOfSeats>();
+            VisibleOccupiedSeats = 5;
         }
 
         public void InitializeRoom(string filenm)
@@ -41,7 +44,7 @@ namespace Day11_SeatingSystem
                     //{
                     //    throw new ArgumentOutOfRangeException();
                     //}
-                    new_row.Row.Add(new_seat);
+                    new_row.ARowOfSeats.Add(new_seat);
                     c++;
                 }
                 Room.Add(new_row);
@@ -61,12 +64,22 @@ namespace Day11_SeatingSystem
             var n = 0;
             foreach (var row in Room)
             {
+                char t;
                 Console.Write(String.Format("Row {0,2}: ", n));
-                foreach (var s in row.Row)
+                foreach (var s in row.ARowOfSeats)
                 {
                     var d = CountSurroundings(s);
                     //Console.Write(String.Format("{0} {1},", s.State, d['L']));
-                    Console.Write(String.Format("{0:1}", s.State));
+                    //if (s.State == '#')
+                    //{
+                    //    t = '█';
+                    //}
+                    //else
+                    //{
+                    //    t = s.State;
+                    //}
+                    t = s.State;
+                    Console.Write(String.Format("{0:1}", t));
                 }
                 Console.WriteLine();
                 n++;
@@ -82,10 +95,10 @@ namespace Day11_SeatingSystem
             var c = 0;
             foreach (RowOfSeats row in Room)
             {
-                foreach (Seat seat in row.Row)
+                foreach (Seat seat in row.ARowOfSeats)
                 {
                     new_status = ApplyRules(seat);
-                    _nextGenRoom[r].Row[c].State = new_status;
+                    _nextGenRoom[r].ARowOfSeats[c].State = new_status;
                     c++;
                 }
                 c = 0;
@@ -108,9 +121,9 @@ namespace Day11_SeatingSystem
             var c = 0;
             foreach (var row in Room)
             {
-                foreach (var seat in row.Row)
+                foreach (var seat in row.ARowOfSeats)
                 {
-                    if (seat.State != rm[r].Row[c].State)
+                    if (seat.State != rm[r].ARowOfSeats[c].State)
                     {
                         result = true;
                         break;
@@ -124,7 +137,7 @@ namespace Day11_SeatingSystem
             return result;
         }
 
-        public void SwapOut()
+        private void SwapOut()
         {
             if (!(Room == null) && !(_nextGenRoom == null))
             {
@@ -145,14 +158,15 @@ namespace Day11_SeatingSystem
                 return result; ;
             }
 
-            Dictionary<char, int> t = CountSurroundings(seat);
+            //Dictionary<char, int> t = CountSurroundings(seat);
+            Dictionary<char, int> t = CountSurroundingsNewRules(seat);
 
             if (seat.State == 'L' && t['#'] == 0)
             {
                 // seat becomes occupied
                 result = '#';
             }
-            else if (seat.State == '#' && t['#'] >= 4)
+            else if (seat.State == '#' && t['#'] >= VisibleOccupiedSeats)
             {
                 // seat becomes empty
                 result = 'L';
@@ -186,9 +200,9 @@ namespace Day11_SeatingSystem
                 // TODO: edge cases ??
                 r = seat_row + rows[i];
                 c = seat_col + cols[i];
-                if ((r >= 0 && r < Room.Count) && (c >= 0 && c < Room[0].Row.Count))
+                if ((r >= 0 && r < Room.Count) && (c >= 0 && c < Room[0].ARowOfSeats.Count))
                 {
-                    stat = Room[r].Row[c].State;
+                    stat = Room[r].ARowOfSeats[c].State;
                     result[stat] += 1;
                 }
                 // do nothing if one or both off the gird.  no wrapping around here. 
@@ -214,12 +228,149 @@ namespace Day11_SeatingSystem
             return result;
         }
 
+        public Dictionary<char, int> CountSurroundingsNewRules(Seat seat)
+        {
+            var result = new Dictionary<char, int>();
+            result['L'] = 0;  // empty
+            result['.'] = 0;  // floor
+            result['#'] = 0;  // occupied
+
+            var seat_row = seat.SeatNumber.Item1;
+            var seat_col = seat.SeatNumber.Item2;
+
+            char stat;
+
+            // check rows first
+            // from first seat in row to the end, not counting the seat under consideration.
+            // check diagonals next
+            // up and to the right
+            var r = seat_row;
+            var c = seat_col;
+            do
+            {
+                stat = Room[r].ARowOfSeats[c].State;
+                if (stat == '#' || stat == 'L')
+                {
+                    result[stat] += 1;
+                    break;
+                }
+                c++;
+            } while ((r >= 0 && r < Room.Count) && (c >= 0 && c < Room[0].ARowOfSeats.Count));
+
+            r = seat_row;
+            c = seat_col;
+            do
+            {
+                stat = Room[r].ARowOfSeats[c].State;
+                if (stat == '#' || stat == 'L')
+                {
+                    result[stat] += 1;
+                    break;
+                }
+                c--;
+            } while ((r >= 0 && r < Room.Count) && (c >= 0 && c < Room[0].ARowOfSeats.Count));
+
+            // check columns next
+            r = seat_row;
+            c = seat_col;
+            do
+            {
+                stat = Room[r].ARowOfSeats[seat_col].State;
+                if (stat == '#' || stat == 'L')
+                {
+                    result[stat] += 1;
+                    break;
+                }
+                r++;
+            } while ((r >= 0 && r < Room.Count) && (c >= 0 && c < Room[0].ARowOfSeats.Count));
+
+            r = seat_row;
+            c = seat_col;
+            do
+            {
+                stat = Room[r].ARowOfSeats[seat_col].State;
+                if (stat == '#' || stat == 'L')
+                {
+                    result[stat] += 1;
+                    break;
+                }
+                r--;
+            } while ((r >= 0 && r < Room.Count) && (c >= 0 && c < Room[0].ARowOfSeats.Count));
+
+            // check diagonals next
+            // up and to the right
+            r = seat_row;
+            c = seat_col;
+            do
+            {
+                stat = Room[r].ARowOfSeats[c].State;
+                if (stat == '#' || stat == 'L')
+                {
+                    result[stat] += 1;
+                    break;
+                }
+                r--;
+                c++;
+
+            } while ((r >= 0 && r < Room.Count) && (c >= 0 && c < Room[0].ARowOfSeats.Count));
+
+            // up and to the left
+            r = seat_row;
+            c = seat_col;
+            do
+            {
+                stat = Room[r].ARowOfSeats[c].State;
+                if (stat == '#' || stat == 'L')
+                {
+                    result[stat] += 1;
+                    break;
+                }
+                r--;
+                c--;
+            } while ((r >= 0 && r < Room.Count) && (c >= 0 && c < Room[0].ARowOfSeats.Count));
+
+            // down and to the left
+            r = seat_row;
+            c = seat_col;
+            do
+            {
+                stat = Room[r].ARowOfSeats[c].State;
+                if (stat == '#' || stat == 'L')
+                {
+                    result[stat] += 1;
+                    break;
+                }
+                r++;
+                c--;
+            } while ((r >= 0 && r < Room.Count) && (c >= 0 && c < Room[0].ARowOfSeats.Count));
+
+            // down and to the right
+            r = seat_row;
+            c = seat_col;
+            do
+            {
+                stat = Room[r].ARowOfSeats[c].State;
+                if (stat == '#' || stat == 'L')
+                {
+                    result[stat] += 1;
+                    break;
+                }
+                r--;
+                c++;
+
+            } while ((r >= 0 && r < Room.Count) && (c >= 0 && c < Room[0].ARowOfSeats.Count));
+
+
+            return result;
+        }
+
+
         public int CountOfOccupiedSeats()
         {
             var n = 0;
             foreach (var row in Room)
             { 
-                foreach (var s in row.Row)
+                foreach (var s in row.ARowOfSeats)
                 {
                     if (s.State == '#')
                     {
@@ -239,11 +390,11 @@ namespace Day11_SeatingSystem
             foreach (var r in Room)
             {
                 new_row = new RowOfSeats();
-                foreach (var seat in r.Row)
+                foreach (var seat in r.ARowOfSeats)
                 {
                     var new_seat = new Seat(seat.SeatNumber.Item1, seat.SeatNumber.Item2);
                     new_seat.State = seat.State;
-                    new_row.Row.Add(new_seat);
+                    new_row.ARowOfSeats.Add(new_seat);
                 }
                 _nextGenRoom.Add(new_row);
             };
