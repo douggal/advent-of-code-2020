@@ -119,6 +119,8 @@ namespace Day10_AdapterArray
 
             List<int> validCombos = new List<int>();
 
+            List<int> deadEndAdapters = new List<int>();
+
             // start with highest rated item.
             // +1 for highest rated item.
 
@@ -126,7 +128,7 @@ namespace Day10_AdapterArray
 
             adapters.Insert(0, 0); // add the wall outlet
 
-            count = CountPossibleConnections(adapters, 0);
+            count = CountPossibleConnections(adapters, 0, deadEndAdapters);
 
             if (count != 0)
             {
@@ -145,76 +147,67 @@ namespace Day10_AdapterArray
 
 
 
-        private static double CountPossibleConnections(List<int> adapters, int v)
+        private static double CountPossibleConnections(List<int> adapters, int v, List<int> deadEnds)
         {
             double sum = 0;
-            List<Node> nodes = new List<Node>();
+            List<int> nodes = new List<int>();
+
+
+            if (adapters[v] == adapters[adapters.Count - 1] || deadEnds.Contains(adapters[v])) // end of the list
+            {
+                return sum;
+            }
 
             // v = starting index
             // get next up to 3 adapters in list, which is sorted ascending order.
             for (int i = v + 1; i < adapters.Count && i <= v + 3; i++)
             {
-                var d = adapters[i] - adapters[v];  // adapter before the current one in the list
+                var d = adapters[i] - adapters[v];  // adapter before the current one in the list - current adapter's joltage
                 if (d >= 1 && d <= 3)
                 {
-                    Node n = new Node(i, adapters[i]);
-                    nodes.Add(n);
+                    nodes.Add(i);
                 }
             }
 
             if (nodes.Count == 0)
             {
-                return 0;  
+                // dead end adapter - add to list
+                deadEnds.Add(adapters[v]);
+                return sum;  
             } 
             else
             {
                 for (int nc = 0; nc < nodes.Count; nc++)
                 {
-                    var t = CheckConnections(nodes[nc], adapters, nodes[nc].Index);
-                    if (t== 0 || nodes[nc].DeadEnd)
+                    var t = CheckConnections(nodes[nc], adapters, nodes[nc]);
+                    // if not at end of list and came back with no connections then add to dead ends list
+                    if (adapters[nodes[nc]] != adapters[adapters.Count - 1] && (t == 0 ))
                     {
                         //nodes.RemoveAt(nc);  //prune this path -
+                        deadEnds.Add(adapters[nodes[nc]]);
                     }
                     else
                     {
-                        nodes[nc].TotalConnectionCount += CountPossibleConnections(adapters, nodes[nc].Index);
+                        sum += CountPossibleConnections(adapters, nodes[nc], deadEnds);
                     }
                 }
             }
-
-            foreach (var node in nodes)
-            {
-                if (!node.DeadEnd)
-                {
-                    sum += node.TotalConnectionCount;
-                }
-            }
-
             return sum;
 
           }
 
-        private static int CheckConnections(Node node, List<int> adapters, int v)
+        private static int CheckConnections(int node, List<int> adapters, int v)
         {
             var result = 0;
             for (int i = v + 1; i < adapters.Count && i <= v + 3; i++)
             {
-                var d = adapters[i] - adapters[v];  // adapter before the current one in the list
+                var d = adapters[i] - adapters[v];  // adapter before the current one in the list - current adapter
                 if (d >= 1 && d <= 3)
                 {
                     result += 1;
                 }
             }
-            node.ConnectionCount = result;
 
-            if (result == 0)
-            {
-                node.DeadEnd = true;
-            }
-            if (adapters.Count-1 == v)
-            {
-                node.EndOfChain = true;
-            }
             return result;
         }
 
