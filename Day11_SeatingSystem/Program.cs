@@ -47,27 +47,27 @@ namespace Day11_SeatingSystem
             Console.WriteLine();
 
             // run 1 gen
-            wr.GenerateNext();
-            wr.PrintRoom();
-            Console.WriteLine();
+            //wr.GenerateNext();
+            //wr.PrintRoom();
+            //Console.WriteLine();
 
             // run 9 more gens
-            //var ngens = 100;
-            //var prevChgState = false;
-            //for (int i = 0; i < ngens; i++)
-            //{
-            //    prevChgState = wr.HasChanged;
-            //    wr.GenerateNext();
-            //    if (true || (i > 0 && prevChgState != wr.HasChanged))
-            //    {
-            //        Console.WriteLine($"Generation {i}:");
-            //        wr.PrintRoom();
-            //        //Console.WriteLine($"{wr.HasChanged}");
-            //        Console.WriteLine($"Count of occupied Seats {wr.CountOfOccupiedSeats()}\n\n");
+            var ngens = 10;
+            var prevChgState = false;
+            for (int i = 0; i < ngens; i++)
+            {
+                prevChgState = wr.HasChanged;
+                wr.GenerateNext();
+                if ((i > 0 && prevChgState != wr.HasChanged))
+                {
+                    Console.WriteLine($"Generation {i}:");
+                    wr.PrintRoom();
+                    Console.WriteLine($"{wr.HasChanged}");
+                    Console.WriteLine($"Count of occupied Seats {wr.CountOfOccupiedSeats()}\n\n");
 
-            //    }
-            //    //Console.WriteLine($"{wr.HasChanged}");
-            //}
+                }
+                Console.WriteLine($"{wr.HasChanged}");
+            }
 
             Console.WriteLine($"Count of occupied Seats {wr.CountOfOccupiedSeats()}\n\n");
 
