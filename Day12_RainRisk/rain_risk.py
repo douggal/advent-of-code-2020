@@ -30,7 +30,7 @@ print()
 # Python find letter in list
 # https://stackoverflow.com/questions/26355191/python-check-if-a-letter-is-in-a-list
 
-fn = "PuzzleInputTest.txt"
+fn = "PuzzleInput.txt"
 nav_instr = list()
 with open(fn) as f:
     for line in f:
@@ -40,7 +40,7 @@ with open(fn) as f:
             new_instr.append(int(line[1:].strip()))
             nav_instr.append(new_instr)
 
-print(nav_instr)
+#print(nav_instr)
 
 # ship starts at East 0, North 0 and is facing East
 # postion = list of direction ship is facing followed by coords of curr curr_pos (East-West, North-South)
@@ -48,21 +48,22 @@ print(nav_instr)
 curr_pos = ['E',0,0]
 NE = ['E','N']
 SW = ['W','S']
-cardinal_pts = ['N',]
+cardinal_pts = ['N','S','E','W']
 right_turns = ['E','S','W','N']
 left_turns = ['E','N','W','S']
 turns = {}
 for y in right_turns:
-    i = 0
+    i = right_turns.index(y)
     for x in [90, 180, 270, 360]:
         if i < 3:
             i += 1
         else:
             i = 0
+
         turns['R' + '_' + y + '_' + str(x)] = right_turns[i]
 
 for y in right_turns:
-    i = 1
+    i = left_turns.index(y)
     for x in [-90, -180, -270, -360]:
         if i < 3:
             i += 1
@@ -71,7 +72,7 @@ for y in right_turns:
         turns['R' + '_' + y + '_' + str(x)] = left_turns[i]
 
 for y in left_turns:
-    i = 1
+    i = left_turns.index(y)
     for x in [90, 180, 270, 360]:
         if i < 3:
             i += 1
@@ -80,7 +81,7 @@ for y in left_turns:
         turns['L' + '_' + y + '_' + str(x)] = left_turns[i]
 
 for y in left_turns:
-    i = 1
+    i = right_turns.index(y)
     for x in [-90, -180, -270, -360]:
         if i < 3:
             i += 1
@@ -88,7 +89,7 @@ for y in left_turns:
             i = 0
         turns['L' + '_' + y + '_' + str(x)] = right_turns[i]
 
-#print(turns)
+print(turns)
 
 
 # Part 1: following the instructions in the input file where does the ship end up?
