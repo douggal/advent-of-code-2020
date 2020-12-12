@@ -26,23 +26,108 @@ print('Advent of Code 2020')
 print('--- Day 12: Rain Risk ---')
 print()
 
+# Taxicab aka Manhattan distance  https://en.wikipedia.org/wiki/Taxicab_geometry
+# sum of absolute dist  (p1,p1), (q2,q2) = |p1 - q1| + |p2 - q2|
 
-fn = "PuzzleInputTEST.txt"
+# Python find letter in list
+# https://stackoverflow.com/questions/26355191/python-check-if-a-letter-is-in-a-list
+
+fn = "PuzzleInputTest.txt"
 nav_instr = list()
 with open(fn) as f:
     for line in f:
         if (line.strip() != ""):
             new_instr = []
-            tmp = re.split('[NSEWLRF]{1}', line)
-            new_instr.append(tmp[0].strip())
-            new_instr.append(int(tmp[1].strip()))
+            new_instr.append(line[0])
+            new_instr.append(int(line[1:].strip()))
             nav_instr.append(new_instr)
 
 print(nav_instr)
 
-# Part 1: 
+# ship starts at East 0, North 0 and is facing East
+# postion = list of direction ship is facing followed by coords of curr curr_pos (East-West, North-South)
+# the ship starts at the center of a cartesian grid
+curr_pos = ['E',0,0]
+NE = ['E','N']
+SW = ['W','S']
+cardinal_pts = ['N',]
+right_turns = ['E','S','W','N']
+left_turns = ['E','N','W','S']
+turns = {}
+for y in right_turns:
+    i = 0
+    for x in [90, 180, 270, 360]:
+        if i < 3:
+            i += 1
+        else:
+            i = 0
+        turns['R' + '_' + y + '_' + str(x)] = right_turns[i]
+
+for y in right_turns:
+    i = 1
+    for x in [-90, -180, -270, -360]:
+        if i < 3:
+            i += 1
+        else:
+            i = 0
+        turns['R' + '_' + y + '_' + str(x)] = left_turns[i]
+
+for y in left_turns:
+    i = 1
+    for x in [90, 180, 270, 360]:
+        if i < 3:
+            i += 1
+        else:
+            i = 0
+        turns['L' + '_' + y + '_' + str(x)] = left_turns[i]
+
+for y in left_turns:
+    i = 1
+    for x in [-90, -180, -270, -360]:
+        if i < 3:
+            i += 1
+        else:
+            i = 0
+        turns['L' + '_' + y + '_' + str(x)] = right_turns[i]
+
+print(turns)
 
 
-# Part 2 of the Day 8 puzzle:
+# Part 1: following the instructions in the input file where does the ship end up?
+
+for inst in nav_instr:
+    print(inst, ' : ', end='')
+    n = inst[0]  # nav instruction cardinal directon or 'F' 
+    d = inst[1]  # units / distance
+    di = curr_pos[0]  # current direction ship is facing
+    if (n in ['F']):
+        if ( di in NE):
+            curr_pos[1] += d * 1
+        else:
+            curr_pos[2] += d * -1
+    elif (n in cardinal_pts):
+        if ( di in NE):
+            curr_pos[1] += d * 1
+        else:
+            curr_pos[2] += d * -1
+    elif (n == 'R'):
+        if (di == 'N'):
+            curr_pos[0] = 'E'
+        elif (di == 'E'):
+            curr_pos[0] = 'S'
+        elif (di == 'S'):
+            curr_pos[0] = 'W'
+        else:
+            curr_pos[0] = 'N'
+    elif (n == 'L'):
+        pass
+
+
+
+    print("curr_pos is now ",curr_pos)
+
+print('Manhattan distance from starting curr_pos is ',curr_pos[1] + curr_pos[2])
+
+# Part 2 of the Day 12 puzzle:
 print()
-print('Part 2:  What was the value in the accumulator after fixing the program? ')
+print('Part 2:  ? ')
