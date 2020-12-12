@@ -14,7 +14,7 @@ namespace Day11_SeatingSystem
 
             Console.WriteLine(@"--- Day 11: Seating System ---");
 
-            var inputFile = @"PuzzleInputTest.txt";
+            var inputFile = @"PuzzleInput.txt";
 
             /*
              * I took an object oriented C# approach. Although verbose and not efficient of CPU 
@@ -52,7 +52,7 @@ namespace Day11_SeatingSystem
             //Console.WriteLine();
 
             // run 9 more gens
-            var ngens = 10;
+            var ngens = 1000;
             var prevChgState = false;
             for (int i = 0; i < ngens; i++)
             {
@@ -62,11 +62,11 @@ namespace Day11_SeatingSystem
                 {
                     Console.WriteLine($"Generation {i}:");
                     wr.PrintRoom();
-                    Console.WriteLine($"{wr.HasChanged}");
+                    //Console.WriteLine($"{wr.HasChanged}");
                     Console.WriteLine($"Count of occupied Seats {wr.CountOfOccupiedSeats()}\n\n");
 
                 }
-                Console.WriteLine($"{wr.HasChanged}");
+                //Console.WriteLine($"{wr.HasChanged}");
             }
 
             Console.WriteLine($"Count of occupied Seats {wr.CountOfOccupiedSeats()}\n\n");

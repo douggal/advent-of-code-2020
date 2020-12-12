@@ -250,7 +250,6 @@ namespace Day11_SeatingSystem
                 }
                 c += 1;
             } ;
-            //Console.WriteLine($"OCCUPIED SEATS: {result['#']}");
 
             // 2. seats in column - seats to the left
             r = seat_row;
@@ -265,7 +264,6 @@ namespace Day11_SeatingSystem
                 }
                 c--;
             } ;
-            //Console.WriteLine($"OCCUPIED SEATS: {result['#']}");
 
             // 3. check column next
             // 3. row seats down below this one
@@ -281,7 +279,6 @@ namespace Day11_SeatingSystem
                 }
                 r++;
             } ;
-            //Console.WriteLine($"OCCUPIED SEATS: {result['#']}");
 
             // 4. row seats up 
             r = seat_row-1;
@@ -296,7 +293,6 @@ namespace Day11_SeatingSystem
                 }
                 r--;
             } ;
-            //Console.WriteLine($"OCCUPIED SEATS: {result['#']}");
 
             // check diagonals next
             // 5.  up and to the right
@@ -314,7 +310,6 @@ namespace Day11_SeatingSystem
                 c++;
 
             } ;
-            //Console.WriteLine($"OCCUPIED SEATS: {result['#']}");
 
             // 6. down and to the right
             r = seat_row+1;
@@ -330,7 +325,6 @@ namespace Day11_SeatingSystem
                 r++;
                 c++;
             } ;
-            //Console.WriteLine($"OCCUPIED SEATS: {result['#']}");
 
             // 7. down and to the left
             r = seat_row+1;
@@ -346,7 +340,6 @@ namespace Day11_SeatingSystem
                 r++;
                 c--;
             } ;
-            //Console.WriteLine($"OCCUPIED SEATS: {result['#']}");
 
             // 8. up and to the left
             r = seat_row-1;
@@ -365,8 +358,6 @@ namespace Day11_SeatingSystem
             } ;
 
            
-            //Console.WriteLine($"OCCUPIED SEATS: {result['#']}");
-
             return result;
         }
 
