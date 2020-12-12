@@ -1,8 +1,6 @@
 #   Advent of Code 2020  Day 12 Puzzle Rain Risk https://adventofcode.com
 #   Created 12/12/2020
 
-
-import re
 import collections
 
 class Accumulator:
@@ -90,7 +88,7 @@ for y in left_turns:
             i = 0
         turns['L' + '_' + y + '_' + str(x)] = right_turns[i]
 
-print(turns)
+#print(turns)
 
 
 # Part 1: following the instructions in the input file where does the ship end up?
@@ -101,32 +99,33 @@ for inst in nav_instr:
     d = inst[1]  # units / distance
     di = curr_pos[0]  # current direction ship is facing
     if (n in ['F']):
-        if ( di in NE):
-            curr_pos[1] += d * 1
-        else:
-            curr_pos[2] += d * -1
-    elif (n in cardinal_pts):
-        if ( di in NE):
-            curr_pos[1] += d * 1
-        else:
-            curr_pos[2] += d * -1
-    elif (n == 'R'):
-        if (di == 'N'):
-            curr_pos[0] = 'E'
-        elif (di == 'E'):
-            curr_pos[0] = 'S'
+        if ( di == 'N'):
+            curr_pos[2] += d * 1
         elif (di == 'S'):
-            curr_pos[0] = 'W'
-        else:
-            curr_pos[0] = 'N'
-    elif (n == 'L'):
+            curr_pos[2] += d * -1
+        elif ( di == 'E'):
+            curr_pos[1] += d * 1
+        elif (di == 'W'):
+            curr_pos[1] += d * -1
+    elif (n in cardinal_pts):
+        if ( n == 'N'):
+            curr_pos[2] += d * 1
+        elif (n == 'S'):
+            curr_pos[2] += d * -1
+        elif ( n == 'E'):
+            curr_pos[1] += d * 1
+        elif (n == 'W'):
+            curr_pos[1] += d * -1
+    elif (n in ['R','L']):
+        new_di = turns[n + '_' + di + '_' + str(d)]
+        curr_pos[0] = new_di
+    else:
         pass
-
-
 
     print("curr_pos is now ",curr_pos)
 
-print('Manhattan distance from starting curr_pos is ',curr_pos[1] + curr_pos[2])
+
+print('Manhattan distance from starting curr_pos is ', abs(curr_pos[1]) + abs(curr_pos[2]))
 
 # Part 2 of the Day 12 puzzle:
 print()
