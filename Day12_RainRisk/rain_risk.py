@@ -89,7 +89,7 @@ for y in left_turns:
             i = 0
         turns['L' + '_' + y + '_' + str(x)] = right_turns[i]
 
-print(turns)
+#print(turns)
 
 
 # Part 1: following the instructions in the input file where does the ship end up?
