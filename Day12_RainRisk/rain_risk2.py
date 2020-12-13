@@ -3,22 +3,6 @@
 
 import collections
 
-class Accumulator:
-    # class Accumulator maintains a running total and count of items added
-    total = 0
-    N = 0
-
-    def __init__(self, value):
-        self.total = value
-        self.N = 0
-
-    def ToString(self):
-        str(self.total)
-
-    def AddValue(self, value):
-        self.total += value
-        self.N += 1
-
 
 print('Advent of Code 2020')
 print('--- Day 12: Rain Risk ---')
@@ -129,16 +113,6 @@ for inst in nav_instr:
             waypoint[0] += d * -1
     elif (n == 'R'):
         if (d == 90):
-            tmp = -waypoint[0]
-            waypoint[0] = waypoint[1]
-            waypoint[1] = tmp
-        elif (d==180):
-            waypoint[0] = -waypoint[0]
-            waypoint[1] = -waypoint[1]
-        elif (d==270):
-            waypoint[0] = -waypoint[0]
-    elif (n == 'L'):
-        if (d == 90):
             tmp = waypoint[0]
             waypoint[0] = -waypoint[1]
             waypoint[1] = tmp
@@ -146,7 +120,21 @@ for inst in nav_instr:
             waypoint[0] = -waypoint[0]
             waypoint[1] = -waypoint[1]
         elif (d==270):
+            tmp = -waypoint[0]
+            waypoint[0] = waypoint[1]
+            waypoint[1] = tmp
+    elif (n == 'L'):
+        if (d == 90):
+            tmp = -waypoint[0]
+            waypoint[0] = waypoint[1]
+            waypoint[1] = tmp
+        elif (d==180):
+            waypoint[0] = -waypoint[0]
             waypoint[1] = -waypoint[1]
+        elif (d==270):
+            tmp = waypoint[0]
+            waypoint[0] = -waypoint[1]
+            waypoint[1] = tmp
     else:
         pass
 
