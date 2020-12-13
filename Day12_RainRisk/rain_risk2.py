@@ -3,6 +3,11 @@
 
 import collections
 
+# 12/13/2020:   That's not the right answer. If you're stuck, make sure you're using the 
+# full input data; there are also some general tips on the about page, or you can 
+# ask for hints on the subreddit. Because you have guessed incorrectly 5 times on 
+# this puzzle, please wait 5 minutes before trying again. (You guessed 42841.) 
+
 
 print('Advent of Code 2020')
 print('--- Day 12: Rain Risk ---')
@@ -145,8 +150,8 @@ for inst in nav_instr:
                 waypoint[0] = -waypoint[0]
                 waypoint[1] = -waypoint[1]
              elif waypoint[0]>= 0 and waypoint[1] <= 0:
-                waypoint[0] = -waypoint[0]
-                waypoint[1] = waypoint[1]
+                waypoint[0] = waypoint[0]
+                waypoint[1] = -waypoint[1]
              elif waypoint[0] < 0 and waypoint[1] <= 0:
                 waypoint[0] = -waypoint[0]
                 waypoint[1] = -waypoint[1]
@@ -164,7 +169,7 @@ for inst in nav_instr:
                 tmp = waypoint[0]
                 waypoint[0] = -waypoint[1]
                 waypoint[1] = tmp
-            elif waypoint[0] < 0 and waypoint[1] <= 0:
+            elif waypoint[0] <= 0 and waypoint[1] <= 0:
                 # 3rd quadrant - 2nd swap and E-W becomes positive
                 tmp = waypoint[0]
                 waypoint[0] = -waypoint[1]
@@ -186,13 +191,13 @@ for inst in nav_instr:
                 tmp = waypoint[0]
                 waypoint[0] = waypoint[1]
                 waypoint[1] = -tmp
-            elif waypoint[0] < 0 and waypoint[1] <= 0:
-                # 3rd quadrant swap and N-S becomes positive
+            elif waypoint[0] <= 0 and waypoint[1] <= 0:
+                # 3rd quadrant swap and E-W becomes positive
                 tmp = waypoint[0]
-                waypoint[0] = waypoint[1]
-                waypoint[1] = -tmp
+                waypoint[0] = -waypoint[1]
+                waypoint[1] = tmp
             if waypoint[0] <= 0 and waypoint[1] >= 0:
-                # 4th quadrant - 1st swap and both become positive
+                # 4th quadrant - 1st swap and N-S become positive
                 tmp = waypoint[0]
                 waypoint[0] = waypoint[1]
                 waypoint[1] = -tmp
