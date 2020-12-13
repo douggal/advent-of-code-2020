@@ -101,14 +101,23 @@ for inst in nav_instr:
     d = inst[1]  # units / distance
     di = curr_pos[0]  # current direction ship is facing
     if (n in ['F']):
-        if ( di == 'N'):
-            curr_pos[2] == curr_pos[2] + d * 7
-        elif (di == 'S'):
-            curr_pos[2] == curr_pos[2] + d * -7
-        elif ( di == 'E'):
-            curr_pos[1] == curr_pos[1] + d * 7
-        elif (di == 'W'):
-            curr_pos[1] == curr_pos[1] + d * -7
+        if waypoint[1] >= 0 and curr_pos[2] >= 0:
+            curr_pos[2] = curr_pos[2] + waypoint[1] * d 
+        elif waypoint[1] >= 0 and curr_pos[2] < 0:
+            curr_pos[2] = curr_pos[2] + waypoint[1] * -d 
+        elif waypoint[0] < 0 and curr_pos[2] > 0:
+            curr_pos[2] = curr_pos[2] + waypoint[1] * -d 
+        else:
+            curr_pos[2] = curr_pos[2] + waypoint[1] * d 
+        
+        if waypoint[0] >= 0 and curr_pos[1] >= 0:
+            curr_pos[1] = curr_pos[1] + waypoint[0] * d 
+        elif waypoint[0] >= 0 and curr_pos[1] < 0:
+            curr_pos[1] = curr_pos[1] + waypoint[0] * -d 
+        elif waypoint[0] < 0 and curr_pos[1] >= 0:
+            curr_pos[1] = curr_pos[1] + waypoint[0] * -d 
+        elif waypoint[0] < 0 and curr_pos[1] < 0:
+            curr_pos[1] = curr_pos[1] + waypoint[0] * d 
     elif (n in cardinal_pts):
         if ( n == 'N'):
             waypoint[1] += d * 1
@@ -120,28 +129,29 @@ for inst in nav_instr:
             waypoint[0] += d * -1
     elif (n == 'R'):
         if (d == 90):
-            waypoint[1] == -waypoint[1]
+            tmp = -waypoint[0]
+            waypoint[0] = waypoint[1]
+            waypoint[1] = tmp
         elif (d==180):
-            waypoint[0] == -waypoint[0]
-            waypoint[1] == -waypoint[1]
+            waypoint[0] = -waypoint[0]
+            waypoint[1] = -waypoint[1]
         elif (d==270):
-            waypoint[0] == -waypoint[0]
+            waypoint[0] = -waypoint[0]
     elif (n == 'L'):
         if (d == 90):
-            waypoint[0] == -waypoint[0]
+            tmp = waypoint[0]
+            waypoint[0] = -waypoint[1]
+            waypoint[1] = tmp
         elif (d==180):
-            waypoint[0] == -waypoint[0]
-            waypoint[1] == -waypoint[1]
+            waypoint[0] = -waypoint[0]
+            waypoint[1] = -waypoint[1]
         elif (d==270):
-            waypoint[1] == -waypoint[1]
-        
-
-        new_di = turns[n + '_' + di + '_' + str(d)]
-        curr_pos[0] = new_di
+            waypoint[1] = -waypoint[1]
     else:
         pass
 
-    print("curr_pos is now ",curr_pos)
+    print("curr_pos is now ",curr_pos, end='')
+    print("  way point is now ", waypoint)
 
 
 print('Manhattan distance from starting curr_pos is ', abs(curr_pos[1]) + abs(curr_pos[2]))
