@@ -14,7 +14,7 @@ print('Part 2')
 # Python find letter in list
 # https://stackoverflow.com/questions/26355191/python-check-if-a-letter-is-in-a-list
 
-fn = "PuzzleInputTest.txt"
+fn = "PuzzleInput.txt"
 nav_instr = list()
 with open(fn) as f:
     for line in f:
@@ -81,27 +81,27 @@ for y in left_turns:
 
 for inst in nav_instr:
     print(inst, ' : ', end='')
-    n = inst[0]  # nav instruction cardinal directon or 'F' 
+    n = inst[0]  # nav instruction cardinal directon or 'F'
     d = inst[1]  # units / distance
     di = curr_pos[0]  # current direction ship is facing
     if (n in ['F']):
         if waypoint[1] >= 0 and curr_pos[2] >= 0:
-            curr_pos[2] = curr_pos[2] + waypoint[1] * d 
+            curr_pos[2] = curr_pos[2] + waypoint[1] * d
         elif waypoint[1] >= 0 and curr_pos[2] < 0:
-            curr_pos[2] = curr_pos[2] + waypoint[1] * -d 
+            curr_pos[2] = curr_pos[2] + waypoint[1] * -d
         elif waypoint[0] < 0 and curr_pos[2] > 0:
-            curr_pos[2] = curr_pos[2] + waypoint[1] * -d 
+            curr_pos[2] = curr_pos[2] + waypoint[1] * -d
         else:
-            curr_pos[2] = curr_pos[2] + waypoint[1] * d 
-        
+            curr_pos[2] = curr_pos[2] + waypoint[1] * d
+
         if waypoint[0] >= 0 and curr_pos[1] >= 0:
-            curr_pos[1] = curr_pos[1] + waypoint[0] * d 
+            curr_pos[1] = curr_pos[1] + waypoint[0] * d
         elif waypoint[0] >= 0 and curr_pos[1] < 0:
-            curr_pos[1] = curr_pos[1] + waypoint[0] * -d 
+            curr_pos[1] = curr_pos[1] + waypoint[0] * -d
         elif waypoint[0] < 0 and curr_pos[1] >= 0:
-            curr_pos[1] = curr_pos[1] + waypoint[0] * -d 
+            curr_pos[1] = curr_pos[1] + waypoint[0] * -d
         elif waypoint[0] < 0 and curr_pos[1] < 0:
-            curr_pos[1] = curr_pos[1] + waypoint[0] * d 
+            curr_pos[1] = curr_pos[1] + waypoint[0] * d
     elif (n in cardinal_pts):
         if ( n == 'N'):
             waypoint[1] += d * 1
@@ -113,27 +113,60 @@ for inst in nav_instr:
             waypoint[0] += d * -1
     elif (n == 'R'):
         if (d == 90):
-            tmp = waypoint[0]
-            waypoint[0] = -waypoint[1]
-            waypoint[1] = tmp
+            if waypoint[0]>= 0 and waypoint[1] >= 0:
+                tmp = -waypoint[0]
+                waypoint[0] = waypoint[1]
+                waypoint[1] = tmp
+            elif waypoint[0]>= 0 and waypoint[1] < 0:
+                tmp = -waypoint[0]
+                waypoint[0] = -waypoint[1]
+                waypoint[1] = tmp
+            elif waypoint[0] < 0 and waypoint[1] < 0:
+                tmp = waypoint[0]
+                waypoint[0] = -waypoint[1]
+                waypoint[1] = tmp
+            else: # waypoint[0]>= 0 and waypoint[1] > 0:
+                tmp = waypoint[0]
+                waypoint[0] = -waypoint[1]
+                waypoint[1] = tmp
         elif (d==180):
             waypoint[0] = -waypoint[0]
             waypoint[1] = -waypoint[1]
         elif (d==270):
-            tmp = -waypoint[0]
-            waypoint[0] = waypoint[1]
-            waypoint[1] = tmp
+            if waypoint[0]>= 0 and waypoint[1] >= 0:
+                waypoint[0] = -waypoint[0]
+            elif waypoint[0]>= 0 and waypoint[1] < 0:
+                waypoint[1] = -waypoint[1]
+            elif waypoint[0] < 0 and waypoint[1] < 0:
+                waypoint[0] = waypoint[1]
+            else:
+                tmp = waypoint[0]
+                waypoint[0] = waypoint[1]
+                waypoint[1] = tmp
     elif (n == 'L'):
         if (d == 90):
-            tmp = -waypoint[0]
-            waypoint[0] = waypoint[1]
-            waypoint[1] = tmp
+            if waypoint[0]>= 0 and waypoint[1] >= 0:
+                tmp = waypoint[0]
+                waypoint[0] = -waypoint[1]
+                waypoint[1] = tmp
+            elif waypoint[0]>= 0 and waypoint[1] < 0:
+                tmp = waypoint[0]
+                waypoint[0] = waypoint[1]
+                waypoint[1] = tmp
+            elif waypoint[0] < 0 and waypoint[1] < 0:
+                tmp = -waypoint[0]
+                waypoint[0] = waypoint[1]
+                waypoint[1] = tmp
+            if waypoint[0]>= 0 and waypoint[1] >= 0:
+                tmp = waypoint[0]
+                waypoint[0] = -waypoint[1]
+                waypoint[1] = tmp
         elif (d==180):
             waypoint[0] = -waypoint[0]
             waypoint[1] = -waypoint[1]
         elif (d==270):
-            tmp = waypoint[0]
-            waypoint[0] = -waypoint[1]
+            tmp = -waypoint[0]
+            waypoint[0] = waypoint[1]
             waypoint[1] = tmp
     else:
         pass
