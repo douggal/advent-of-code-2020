@@ -18,12 +18,13 @@ My solution to each day's puzzles is in its own folder.  Programming language an
 10. Day 10: Adapter Array (C# .NET Core, Console app, Visual Studio 2019, Windows)
 11. Day 11:  Seating System (C# .NET Core 3.1, Console app, VS 2019, Windows)
 12. Day 12:  Rain Risk (Python, macOS)
-13. Day 13:
+13. Day 13:  Shuttle Search (Python, macOS)
+14. Day 14:  
 
 ### Notes
 
 * Day 12 Part 1 - pass, Part 2 - fail.  I think program is ok but there's
-a bug(s) in it.  Is there an easier way to do the rotations and transformation?
+is a bug(s) in it.  Is there an easier way to do the rotations and transformation?
 Matrices maybe?
 
 * Day 10 Part 1 - pass, Part 2 - fail. I attempted Part 2, but no go and did not compute the right answer.
@@ -33,4 +34,6 @@ I couldn't pull it off.
 
 * Abandoned Day 7 Part 2 - could not work out the T-SQL solution to calculate correct answer.  If I have time I'll return an redo part 2 in Python or C#.
 
-* Day 5:  Binary Boarding was the puzzle I liked the best, so far.
+* Best: Day 5 Binary Boarding was the puzzle I liked the best so far.
+
+* I found the Day 10 Adapter Array puzzle the most difficult so far.
