@@ -19,7 +19,7 @@ print()
 #sea_port_comp = array('Q', (0x0 for i in range(count)))
 sea_port_comp = {}
 
-fn = "PuzzleInputTest.txt"
+fn = "PuzzleInput.txt"
 with open(fn) as f:
     for line in f:
         if (line.strip() != ""):
@@ -45,8 +45,12 @@ with open(fn) as f:
                     j += 1
                 sea_port_comp[instr[0]] = v
 
-print(mask)
+#print(mask)
 print(sea_port_comp)
+
+# https://stackoverflow.com/questions/4880960/how-to-sum-all-the-values-in-a-dictionary
+print('Day 14 Part 1 sum of the values in the sea port computer is: ',sum(sea_port_comp.values()))
+
 
 
 # Part 2 of the Day 14 puzzle:
