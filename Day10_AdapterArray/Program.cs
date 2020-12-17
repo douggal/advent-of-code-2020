@@ -119,7 +119,8 @@ namespace Day10_AdapterArray
 
             adapters.Sort();  // sort the adapter list ascending
 
-            List<int> deadEndAdapters = new List<int>();   // any adapter that cannot connect to another 
+            // when a complete set of pathways from an adapter to end of list is found keep track of it here
+            Dictionary<int, double> completePathsCount = new Dictionary<int, double>();
 
             // start with highest rated item.
             // +1 for highest rated item.
@@ -130,7 +131,7 @@ namespace Day10_AdapterArray
 
             adapters.Insert(0, 0); // add the wall outlet
 
-            count.AddDataValue(FindPaths(adapters, 0, deadEndAdapters, recursionCount));
+            count.AddDataValue(FindPaths(adapters, 0, completePathsCount, recursionCount));
 
             if (count.Total != 0)
             {
@@ -150,16 +151,22 @@ namespace Day10_AdapterArray
 
 
 
-        private static double FindPaths(List<int> adapters, int v, List<int> deadEnds, Accumulator recursionCount)
+        private static double FindPaths(List<int> adapters, int v, Dictionary<int, double> completePathsCount, Accumulator recursionCount)
         {
             double sum = 0;
             List<int> nodes = new List<int>();
 
             recursionCount.AddDataValue(1);
 
+            if (recursionCount.Total % 1000 == 0)
+            {
+                Console.WriteLine($"Recursion count is {recursionCount.Total}");
+            }
+
             // are we at end of the list?
             if (v == adapters.Count - 1)
             {
+                completePathsCount.Add(adapters[v], 1);
                 // we reached end of the list, +1 for successful pathway
                 return 1;
             }
@@ -171,7 +178,7 @@ namespace Day10_AdapterArray
             for (int i = v + 1; i < adapters.Count && i <= v + 3; i++)
             {
                 var d = adapters[i] - adapters[v];  // adapter next on the current one in the list
-                if (d <= 3  && !deadEnds.Contains(adapters[i]))  //joltage diff is <= 3 and this is not a known dead end node
+                if (d <= 3)  //joltage diff is <= 3 and this is not a known dead end node
                 {
                     nodes.Add(i);
                 }
@@ -180,17 +187,28 @@ namespace Day10_AdapterArray
             if (nodes.Count == 0)
             {
                 // dead end adapter - add to list
-                deadEnds.Add(adapters[v]);
+                completePathsCount.Add(adapters[v], 0);
                 return 0;  
             } 
             else
             {
                 // for each adapter up the chain, follow it
+                var s = 0d;
                 for (int n = 0; n < nodes.Count; n++)
                 {
-                     sum += FindPaths(adapters, nodes[n], deadEnds, recursionCount);
+                    if (completePathsCount.ContainsKey(adapters[nodes[n]]))
+                    {
+                        sum += completePathsCount[adapters[nodes[n]]];
+                    }
+                    else
+                    {
+                        s = FindPaths(adapters, nodes[n], completePathsCount, recursionCount);
+                        //completePathsCount.Add(adapters[nodes[n]], s);
+                        sum += s;
+                    }
                 }
             }
+            completePathsCount.Add(adapters[v], sum);
             return sum;
 
           }
