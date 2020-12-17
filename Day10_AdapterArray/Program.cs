@@ -117,9 +117,9 @@ namespace Day10_AdapterArray
             // algorthm:  at each node in the chain there are only so many valid adapters to choose from.
             //  record how many are available.
 
-            List<int> validCombos = new List<int>();
+            adapters.Sort();  // sort the adapter list ascending
 
-            List<int> deadEndAdapters = new List<int>();
+            List<int> deadEndAdapters = new List<int>();   // any adapter that cannot connect to another 
 
             // start with highest rated item.
             // +1 for highest rated item.
@@ -128,7 +128,7 @@ namespace Day10_AdapterArray
 
             adapters.Insert(0, 0); // add the wall outlet
 
-            count = CountPossibleConnections(adapters, 0, deadEndAdapters);
+            count = FindPaths(adapters, 0, deadEndAdapters);
 
             if (count != 0)
             {
@@ -136,7 +136,7 @@ namespace Day10_AdapterArray
             }
             else
             {
-                Console.WriteLine($"Count of valid adapter combos is 0 - no valid path thru this list.");
+                Console.WriteLine($"Count of valid adapter combos is 0 - no valid path thru this list.   ???");
             }
 
 
@@ -147,23 +147,26 @@ namespace Day10_AdapterArray
 
 
 
-        private static double CountPossibleConnections(List<int> adapters, int v, List<int> deadEnds)
+        private static double FindPaths(List<int> adapters, int v, List<int> deadEnds)
         {
             double sum = 0;
             List<int> nodes = new List<int>();
 
-
-            if (adapters[v] == adapters[adapters.Count - 1] || deadEnds.Contains(adapters[v])) // end of the list
+            // are we at end of the list?
+            if (v == adapters.Count - 1)
             {
-                return sum;
+                // we reached end of the list, +1 for successful pathway
+                return 1;
             }
 
+            // not at end of the list ....
+
             // v = starting index
-            // get next up to 3 adapters in list, which is sorted ascending order.
+            // get next up to 3 adapters in list, which is sorted ascending order, so next 3 items ahead
             for (int i = v + 1; i < adapters.Count && i <= v + 3; i++)
             {
-                var d = adapters[i] - adapters[v];  // adapter before the current one in the list - current adapter's joltage
-                if (d >= 1 && d <= 3)
+                var d = adapters[i] - adapters[v];  // adapter next on the current one in the list
+                if (d <= 3  && !deadEnds.Contains(adapters[i]))  //joltage diff is <= 3 and this is not a known dead end node
                 {
                     nodes.Add(i);
                 }
@@ -173,43 +176,19 @@ namespace Day10_AdapterArray
             {
                 // dead end adapter - add to list
                 deadEnds.Add(adapters[v]);
-                return sum;  
+                return 0;  
             } 
             else
             {
-                for (int nc = 0; nc < nodes.Count; nc++)
+                // for each adapter up the chain, follow it
+                for (int n = 0; n < nodes.Count; n++)
                 {
-                    var t = CheckConnections(nodes[nc], adapters, nodes[nc]);
-                    // if not at end of list and came back with no connections then add to dead ends list
-                    if (adapters[nodes[nc]] != adapters[adapters.Count - 1] && (t == 0 ))
-                    {
-                        //nodes.RemoveAt(nc);  //prune this path -
-                        deadEnds.Add(adapters[nodes[nc]]);
-                    }
-                    else
-                    {
-                        sum += CountPossibleConnections(adapters, nodes[nc], deadEnds);
-                    }
+                     sum += FindPaths(adapters, nodes[n], deadEnds);
                 }
             }
             return sum;
 
           }
-
-        private static int CheckConnections(int node, List<int> adapters, int v)
-        {
-            var result = 0;
-            for (int i = v + 1; i < adapters.Count && i <= v + 3; i++)
-            {
-                var d = adapters[i] - adapters[v];  // adapter before the current one in the list - current adapter
-                if (d >= 1 && d <= 3)
-                {
-                    result += 1;
-                }
-            }
-
-            return result;
-        }
 
         private static void FindDistribution(AdapterChain candidateChain)
         {
