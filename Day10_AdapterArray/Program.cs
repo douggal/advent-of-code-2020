@@ -117,26 +117,30 @@ namespace Day10_AdapterArray
             // algorthm:  at each node in the chain there are only so many valid adapters to choose from.
             //  record how many are available.
 
-            List<int> validCombos = new List<int>();
+            adapters.Sort();  // sort the adapter list ascending
 
-            List<int> deadEndAdapters = new List<int>();
+            // when a complete set of pathways from an adapter to end of list is found keep track of it here
+            Dictionary<int, double> completePathsCount = new Dictionary<int, double>();
 
             // start with highest rated item.
             // +1 for highest rated item.
 
-            double count;
+            Accumulator count = new Accumulator();
+
+            Accumulator recursionCount = new Accumulator();
 
             adapters.Insert(0, 0); // add the wall outlet
 
-            count = CountPossibleConnections(adapters, 0, deadEndAdapters);
+            count.AddDataValue(FindPaths(adapters, 0, completePathsCount, recursionCount));
 
-            if (count != 0)
+            if (count.Total != 0)
             {
-                Console.WriteLine($"Count of valid adapter combos is {count}");
+                Console.WriteLine($"Count of valid adapter combos is {count.Total}");
+                Console.WriteLine($"Count of recursive calls to find all paths is {recursionCount.Total}");
             }
             else
             {
-                Console.WriteLine($"Count of valid adapter combos is 0 - no valid path thru this list.");
+                Console.WriteLine($"Count of valid adapter combos is 0 - no valid path thru this list.   ???");
             }
 
 
@@ -147,23 +151,34 @@ namespace Day10_AdapterArray
 
 
 
-        private static double CountPossibleConnections(List<int> adapters, int v, List<int> deadEnds)
+        private static double FindPaths(List<int> adapters, int v, Dictionary<int, double> completePathsCount, Accumulator recursionCount)
         {
             double sum = 0;
             List<int> nodes = new List<int>();
 
+            recursionCount.AddDataValue(1);
 
-            if (adapters[v] == adapters[adapters.Count - 1] || deadEnds.Contains(adapters[v])) // end of the list
+            if (recursionCount.Total % 1000 == 0)
             {
-                return sum;
+                Console.WriteLine($"Recursion count is {recursionCount.Total}");
             }
 
+            // are we at end of the list?
+            if (v == adapters.Count - 1)
+            {
+                completePathsCount.Add(adapters[v], 1);
+                // we reached end of the list, +1 for successful pathway
+                return 1;
+            }
+
+            // not at end of the list ....
+
             // v = starting index
-            // get next up to 3 adapters in list, which is sorted ascending order.
+            // get next up to 3 adapters in list, which is sorted ascending order, so next 3 items ahead
             for (int i = v + 1; i < adapters.Count && i <= v + 3; i++)
             {
-                var d = adapters[i] - adapters[v];  // adapter before the current one in the list - current adapter's joltage
-                if (d >= 1 && d <= 3)
+                var d = adapters[i] - adapters[v];  // adapter next on the current one in the list
+                if (d <= 3)  //joltage diff is <= 3 and this is not a known dead end node
                 {
                     nodes.Add(i);
                 }
@@ -172,44 +187,31 @@ namespace Day10_AdapterArray
             if (nodes.Count == 0)
             {
                 // dead end adapter - add to list
-                deadEnds.Add(adapters[v]);
-                return sum;  
+                completePathsCount.Add(adapters[v], 0);
+                return 0;  
             } 
             else
             {
-                for (int nc = 0; nc < nodes.Count; nc++)
+                // for each adapter up the chain, follow it
+                var s = 0d;
+                for (int n = 0; n < nodes.Count; n++)
                 {
-                    var t = CheckConnections(nodes[nc], adapters, nodes[nc]);
-                    // if not at end of list and came back with no connections then add to dead ends list
-                    if (adapters[nodes[nc]] != adapters[adapters.Count - 1] && (t == 0 ))
+                    if (completePathsCount.ContainsKey(adapters[nodes[n]]))
                     {
-                        //nodes.RemoveAt(nc);  //prune this path -
-                        deadEnds.Add(adapters[nodes[nc]]);
+                        sum += completePathsCount[adapters[nodes[n]]];
                     }
                     else
                     {
-                        sum += CountPossibleConnections(adapters, nodes[nc], deadEnds);
+                        s = FindPaths(adapters, nodes[n], completePathsCount, recursionCount);
+                        //completePathsCount.Add(adapters[nodes[n]], s);
+                        sum += s;
                     }
                 }
             }
+            completePathsCount.Add(adapters[v], sum);
             return sum;
 
           }
-
-        private static int CheckConnections(int node, List<int> adapters, int v)
-        {
-            var result = 0;
-            for (int i = v + 1; i < adapters.Count && i <= v + 3; i++)
-            {
-                var d = adapters[i] - adapters[v];  // adapter before the current one in the list - current adapter
-                if (d >= 1 && d <= 3)
-                {
-                    result += 1;
-                }
-            }
-
-            return result;
-        }
 
         private static void FindDistribution(AdapterChain candidateChain)
         {
