@@ -124,15 +124,18 @@ namespace Day10_AdapterArray
             // start with highest rated item.
             // +1 for highest rated item.
 
-            double count;
+            Accumulator count = new Accumulator();
+
+            Accumulator recursionCount = new Accumulator();
 
             adapters.Insert(0, 0); // add the wall outlet
 
-            count = FindPaths(adapters, 0, deadEndAdapters);
+            count.AddDataValue(FindPaths(adapters, 0, deadEndAdapters, recursionCount));
 
-            if (count != 0)
+            if (count.Total != 0)
             {
-                Console.WriteLine($"Count of valid adapter combos is {count}");
+                Console.WriteLine($"Count of valid adapter combos is {count.Total}");
+                Console.WriteLine($"Count of recursive calls to find all paths is {recursionCount.Total}");
             }
             else
             {
@@ -147,10 +150,12 @@ namespace Day10_AdapterArray
 
 
 
-        private static double FindPaths(List<int> adapters, int v, List<int> deadEnds)
+        private static double FindPaths(List<int> adapters, int v, List<int> deadEnds, Accumulator recursionCount)
         {
             double sum = 0;
             List<int> nodes = new List<int>();
+
+            recursionCount.AddDataValue(1);
 
             // are we at end of the list?
             if (v == adapters.Count - 1)
@@ -183,7 +188,7 @@ namespace Day10_AdapterArray
                 // for each adapter up the chain, follow it
                 for (int n = 0; n < nodes.Count; n++)
                 {
-                     sum += FindPaths(adapters, nodes[n], deadEnds);
+                     sum += FindPaths(adapters, nodes[n], deadEnds, recursionCount);
                 }
             }
             return sum;
