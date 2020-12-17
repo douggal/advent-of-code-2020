@@ -28,10 +28,15 @@ My solution to each day's puzzles is in its own folder.  Programming language an
 is a bug(s) in it.  Is there an easier way to do the rotations and transformation?
 Matrices maybe?
 
-* Day 10 Part 1 - pass, Part 2 - fail. I attempted Part 2, but no go and did not compute the right answer.
-After much thought I think the key is keep track of adapters which are dead ends (are not the last adapter in the chain and cannot connect to anything else) in a
-reference object outside the recursion and prune out dead end pathways.
-I couldn't pull it off.
+* Day 10 Part 1 - pass, Part 2 - pass.  After much failure and re-thinking I finally got a working program
+for Part 2.  I drew a picture of the sample data with paper and pencil and finally realized the 
+adapter array is not an acyclic directed graph but a directed graph.  
+With right picture implementing a recursive algorithm walk the 
+tree [Wikipedia](https://en.wikipedia.org/wiki/Directed_graph) was straightforward 
+and soon the program was delivering the right answers with test data.  Last problem to solve was how
+to make the process more efficient with the full data set, and it didn't take too much longer, with picture in hand, to
+see a Dictionary object collecting each adapter with its sum of connections going forward 
+would cut the problem down to size.
 
 * Abandoned Day 7 Part 2 - could not work out the T-SQL solution to calculate correct answer.  If I have time I'll return an redo part 2 in Python or C#.
 
