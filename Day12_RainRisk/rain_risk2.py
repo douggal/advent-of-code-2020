@@ -96,24 +96,26 @@ for inst in nav_instr:
     di = curr_pos[0]  # current direction ship is facing
     if (n in ['F']):
         # N-S
-        if waypoint[1] >= 0 and curr_pos[2] >= 0:
-            curr_pos[2] = curr_pos[2] + waypoint[1] * d
-        elif waypoint[1] >= 0 and curr_pos[2] < 0:
-            curr_pos[2] = curr_pos[2] + waypoint[1] * d
-        elif waypoint[1] <= 0 and curr_pos[2] > 0:
-            curr_pos[2] = curr_pos[2] + waypoint[1] * d
-        else:
-            curr_pos[2] = curr_pos[2] + waypoint[1] * d
+        curr_pos[2] += waypoint[1] * d
+        # if waypoint[1] >= 0 and curr_pos[2] >= 0:
+        #     curr_pos[2] = curr_pos[2] + waypoint[1] * d
+        # elif waypoint[1] >= 0 and curr_pos[2] < 0:
+        #     curr_pos[2] = curr_pos[2] + waypoint[1] * d
+        # elif waypoint[1] <= 0 and curr_pos[2] > 0:
+        #     curr_pos[2] = curr_pos[2] + waypoint[1] * d
+        # else:
+        #     curr_pos[2] = curr_pos[2] + waypoint[1] * d
 
         # E-W
-        if waypoint[0] >= 0 and curr_pos[1] >= 0:
-            curr_pos[1] = curr_pos[1] + waypoint[0] * d
-        elif waypoint[0] >= 0 and curr_pos[1] <= 0:
-            curr_pos[1] = curr_pos[1] + waypoint[0] * d
-        elif waypoint[0] <= 0 and curr_pos[1] >= 0:
-            curr_pos[1] = curr_pos[1] + waypoint[0] * d
-        elif waypoint[0] <= 0 and curr_pos[1] <= 0:
-            curr_pos[1] = curr_pos[1] + waypoint[0] * d
+        curr_pos[1] += waypoint[0] * d
+        # if waypoint[0] >= 0 and curr_pos[1] >= 0:
+        #     curr_pos[1] = curr_pos[1] + waypoint[0] * d
+        # elif waypoint[0] >= 0 and curr_pos[1] <= 0:
+        #     curr_pos[1] = curr_pos[1] + waypoint[0] * d
+        # elif waypoint[0] <= 0 and curr_pos[1] >= 0:
+        #     curr_pos[1] = curr_pos[1] + waypoint[0] * d
+        # elif waypoint[0] <= 0 and curr_pos[1] <= 0:
+        #     curr_pos[1] = curr_pos[1] + waypoint[0] * d
     elif (n in cardinal_pts):
         if ( n == 'N'):
             waypoint[1] += d * 1
@@ -146,18 +148,8 @@ for inst in nav_instr:
                 waypoint[0] = -waypoint[1]
                 waypoint[1] = tmp
         elif (d==180):
-             if waypoint[0]>= 0 and waypoint[1] >= 0:
-                waypoint[0] = -waypoint[0]
-                waypoint[1] = -waypoint[1]
-             elif waypoint[0]>= 0 and waypoint[1] <= 0:
-                waypoint[0] = waypoint[0]
-                waypoint[1] = -waypoint[1]
-             elif waypoint[0] < 0 and waypoint[1] <= 0:
-                waypoint[0] = -waypoint[0]
-                waypoint[1] = -waypoint[1]
-             else:  #waypoint[0] < 0 and waypoint[1]> 0:
-                waypoint[0] = -waypoint[0]
-                waypoint[1] = -waypoint[1]
+            waypoint[0] = -waypoint[0]
+            waypoint[1] = -waypoint[1]
         elif (d==270):
             if waypoint[0]>= 0 and waypoint[1] >= 0:
                 # 1st - 4th quadrant swap E-W becomes negative
@@ -202,18 +194,8 @@ for inst in nav_instr:
                 waypoint[0] = waypoint[1]
                 waypoint[1] = -tmp
         elif (d==180):
-            if waypoint[0]>= 0 and waypoint[1] >= 0:
-                waypoint[0] = -waypoint[0]
-                waypoint[1] = -waypoint[1]
-            elif waypoint[0]>= 0 and waypoint[1] <= 0:
-                waypoint[0] = -waypoint[0]
-                waypoint[1] = -waypoint[1]
-            elif waypoint[0] < 0 and waypoint[1] <= 0:
-                waypoint[0] = -waypoint[0]
-                waypoint[1] = -waypoint[1]
-            else:  #waypoint[0] < 0 and waypoint[1]> 0:
-                waypoint[0] = -waypoint[0]
-                waypoint[1] = -waypoint[1]
+            waypoint[0] = -waypoint[0]
+            waypoint[1] = -waypoint[1]
         elif (d==270):
             if waypoint[0]>= 0 and waypoint[1] >= 0:
                 # 1st - 2nd quadrant swap E-W becomes negative
