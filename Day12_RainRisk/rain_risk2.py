@@ -225,3 +225,9 @@ for inst in nav_instr:
 
 
 print('Manhattan distance from starting curr_pos is ', abs(curr_pos[1]) + abs(curr_pos[2]))
+
+# That's not the right answer. If you're stuck, make sure you're using the 
+# full input data; there are also some general tips on the about page, 
+# or you can ask for hints on the subreddit. Because you have guessed 
+# incorrectly 6 times on this puzzle, please wait 5 minutes before 
+# trying again. (You guessed 9297.)
