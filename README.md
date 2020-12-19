@@ -27,6 +27,7 @@ My solution to each day's puzzles is in its own folder.  Programming language an
 * Day 12 Part 1 - pass, Part 2 - fail.  I think program is ok but there's
 is a bug(s) in it.  Is there an easier way to do the rotations and transformation?
 Matrices maybe?
+[subreddit](https://www.reddit.com/r/adventofcode/comments/kbj5me/2020_day_12_solutions/)
 
 * Day 10 Part 1 - pass, Part 2 - pass.  After much failure and re-thinking I finally got a working program
 for Part 2.  I drew a picture of the sample data with paper and pencil and finally realized the 
