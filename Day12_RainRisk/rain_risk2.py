@@ -23,7 +23,7 @@ with open(fn) as f:
             new_instr.append(int(line[1:].strip()))
             nav_instr.append(new_instr)
 
-#print(nav_instr)
+print(nav_instr)
 
 # ship starts at East 0, North 0 and is facing East
 # postion = list of direction ship is facing followed by coords of curr curr_pos (East-West, North-South)
@@ -80,8 +80,8 @@ for inst in nav_instr:
         else: # waypoint[0] < 0 and waypoint[1] > 0:
             # 4th quadrant - swap and both become positive
             tmp = waypoint[0]
-            waypoint[0] = -waypoint[1] # becomes positive
-            waypoint[1] = tmp
+            waypoint[0] = waypoint[1] # becomes positive
+            waypoint[1] = -tmp
     elif (n == 'R' and d==270):
         if waypoint[0]>= 0 and waypoint[1] >= 0:
             # 1st - 4th quadrant swap E-W becomes negative
@@ -161,7 +161,9 @@ print('Manhattan distance from starting curr_pos is ', abs(curr_pos[0]) + abs(cu
 # or you can ask for hints on the subreddit. Because you have guessed 
 # incorrectly 6 times on this puzzle, please wait 5 minutes before 
 # trying again. (You guessed 9297.)
-# 42841
-# 105963
+# 42841 - wrong
+# 105963 - wrong
 
-# 49649
+# 49649 - wrong
+
+#Manhattan distance from starting curr_pos is  18107
