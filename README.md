@@ -24,9 +24,9 @@ My solution to each day's puzzles is in its own folder.  Programming language an
 
 ### Notes
 
-* Day 12 Part 1 - pass, Part 2 - fail.  I think program is ok but there's
-is a bug(s) in it.  Is there an easier way to do the rotations and transformation?
-Matrices maybe?
+* Day 12 Part 1 - pass, Part 2 - pass.  Refactored code to improve it, but
+still had to create additional test data.  Finally found the bug.  It was
+in the rotation code.  I had assume R90 was good but it wasn't.
 [subreddit](https://www.reddit.com/r/adventofcode/comments/kbj5me/2020_day_12_solutions/)
 
 * Day 10 Part 1 - pass, Part 2 - pass.  After much failure and re-thinking I finally got a working program
