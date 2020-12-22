@@ -20,13 +20,14 @@ My solution to each day's puzzles is in its own folder.  Programming language an
 12. Day 12:  Rain Risk (Python, macOS)
 13. Day 13:  Shuttle Search (Python, macOS)
 14. Day 14:  Docking Data (Python, macOS)
+15. Day 15:  
 
 
 ### Notes
 
-* Day 12 Part 1 - pass, Part 2 - fail.  I think program is ok but there's
-is a bug(s) in it.  Is there an easier way to do the rotations and transformation?
-Matrices maybe?
+* Day 12 Part 1 - pass, Part 2 - pass.  Refactored code to improve it, but
+still had to create additional test data.  Finally found the bug.  It was
+in the rotation code.  I had assume R90 was good but it wasn't.
 [subreddit](https://www.reddit.com/r/adventofcode/comments/kbj5me/2020_day_12_solutions/)
 
 * Day 10 Part 1 - pass, Part 2 - pass.  After much failure and re-thinking I finally got a working program
@@ -36,10 +37,10 @@ With right picture implementing a recursive algorithm walk the
 tree [Wikipedia](https://en.wikipedia.org/wiki/Directed_graph) was straightforward 
 and soon the program was delivering the right answers with test data.  Last problem to solve was how
 to make the process more efficient with the full data set, and it didn't take too much longer, with picture in hand, to
-see a Dictionary object collecting each adapter with its sum of connections going forward 
-would cut the problem down to size.
+see a Dictionary object collecting each adapter with its sum of connections going forward would cut the problem down to size.
 
-* Abandoned Day 7 Part 2 - could not work out the T-SQL solution to calculate correct answer.  If I have time I'll return an redo part 2 in Python or C#.
+* 12/21/2020 (Winter Solstice in Northern Hemisphere) Returned to Day 7 Part 2 - could not work out the T-SQL solution to calculate correct answer.  Pretty sure
+I was on right track, but I couldn't get the T-SQL code compute right answer.  Rewrote solution in Python and picked up another star.
 
 * Best: Day 5 Binary Boarding was the puzzle I liked the best so far.
 
