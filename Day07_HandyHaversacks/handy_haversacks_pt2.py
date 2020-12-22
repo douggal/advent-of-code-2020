@@ -6,9 +6,9 @@ import re
 import collections
 import sys
 
-# bag color rule object:  
+# think of each row in the input file as bag color rule object:  
 # a bag color
-# and contains a dictionary object of 0 or more bag colors and their counts
+# and it contains a dictionary object of 0 or more bag colors and their counts
 
 class BagColorRule:
     color = ''
@@ -26,17 +26,20 @@ class BagColorRule:
     def IndexOf(self, clr):
         return self.must_contain.keys().index(clr)
 
+# for debug and verify input file was read correctly
 def print_rule_set(rule_set):
     for rule in rule_set:
         print(rule.color,':')
         for c in rule.must_contain:
             print('   ', rule.must_contain[c], ' ', c)
 
-
+# recursive function
+# given rule set list and a color
+#  find color in the list
+#    if it's end of the chain, exit sum 0
+#    if there's more count (multiply!) count + N bags * how many each bag contains
 def n_bag_contains_colors(rule_set, this_color):
     sum = 0
-
-    print(this_color)
 
     # find bag color in the list of rules
     for bag in rule_set:
@@ -58,7 +61,7 @@ print('Advent of Code 2020')
 print('--- Day 7: Handy Haversacks ---')
 print('Part 2')
 
-file_name = "PuzzleInputDemo2.txt"
+file_name = "PuzzleInput.txt"
 
 rule_id = 0
 seq_id = 0
