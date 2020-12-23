@@ -55,12 +55,14 @@ with open(fn) as f:
                         # C++:  number |= 1UL << n;   SET BIT I to a 1
                         mem |= 0x1 << i
                     else:
+                        # 0 so no change
                         pass
                     j += 1
 
                 # now expand Xs into generate all possible values
                 j = 0 # j is string index (starts at 0), i is power of 2 for this digit (starts at 35)
                 mem_locations = list()
+                powers_of_two = list()
                 m = mem
                 for i in reversed(range(0,36)):
                     if j==35:
@@ -68,6 +70,16 @@ with open(fn) as f:
                     else:
                         s = mask[j:j+1]
                     if s =='X':
+                        powers_of_two.append(i)
+                    else:
+                        pass
+                    j += 1
+
+                # all the locations to which X can float is cartesian product
+                # of the list of locations (powers of two) that have an X in the mask
+                m = mem
+                for i in powers_of_two:
+                    for j in powers_of_two:
                         # set bit
                         # number |= 1UL << n;   SET BIT I to a 1
                         m |= 0x1 << i
@@ -75,10 +87,7 @@ with open(fn) as f:
                         # number &= ~(1UL << n);  CLEAR BIT I ( set = 0)
                         m &= ~(0x1 << i)
                         mem_locations.append(m)
-                    else:
-                        pass
-                    j += 1
-
+                    
                 for m in mem_locations:
                     sea_port_comp[m] = v
 
