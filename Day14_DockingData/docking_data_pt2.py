@@ -87,7 +87,11 @@ with open(fn) as f:
                 for i in x:
                     t = mem
                     for j in i:
-                        t |= 0x1 << i
+                        # set bit to a 1
+                        t |= 0x1 << j
+                        mem_locations.append(t)
+                        # set bit to a 0
+                        t &= ~(0x1 << j)
                         mem_locations.append(t)
                     
                 for m in mem_locations:
