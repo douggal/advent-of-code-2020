@@ -6,6 +6,7 @@ import re
 import collections
 from array import array
 import sys
+import itertools
 
 print('Advent of Code 2020')
 print('--- Day 14: Docking Data ---')
@@ -78,15 +79,16 @@ with open(fn) as f:
                 # all the locations to which X can float is cartesian product
                 # of the list of locations (powers of two) that have an X in the mask
                 m = mem
-                for i in powers_of_two:
-                    for j in powers_of_two:
-                        # set bit
-                        # number |= 1UL << n;   SET BIT I to a 1
-                        m |= 0x1 << i
-                        mem_locations.append(m)
-                        # number &= ~(1UL << n);  CLEAR BIT I ( set = 0)
-                        m &= ~(0x1 << i)
-                        mem_locations.append(m)
+
+                # needed help - need to generate list of all combinations of list items
+                # https://stackoverflow.com/questions/464864/how-to-get-all-possible-combinations-of-a-list-s-elements
+                # https://docs.python.org/3/library/itertools.html#itertools.combinations
+                x = list(itertools.combinations(powers_of_two, len(powers_of_two)))
+                for i in x:
+                    t = mem
+                    for j in i:
+                        t |= 0x1 << i
+                        mem_locations.append(t)
                     
                 for m in mem_locations:
                     sea_port_comp[m] = v
