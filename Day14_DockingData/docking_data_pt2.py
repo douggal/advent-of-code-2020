@@ -12,7 +12,6 @@ print('Advent of Code 2020')
 print('--- Day 14: Docking Data ---')
 print(' Part 2 ')
 
-
 # memory address decoder
 # instead of applying mask to values, now apply mask to the memory locations
 
@@ -27,7 +26,7 @@ print(' Part 2 ')
 #sea_port_comp = array('Q', (0x0 for i in range(count)))
 sea_port_comp = {}
 
-fn = "PuzzleInputTestP2.txt"
+fn = "PuzzleInput.txt"
 with open(fn) as f:
     for line in f:
         if (line.strip() != ""):
@@ -61,6 +60,7 @@ with open(fn) as f:
                     j += 1
 
                 # now expand Xs into generate all possible values
+                # TODO: is there a better way to do this? this seems cumbersome 
                 j = 0 # j is string index (starts at 0), i is power of 2 for this digit (starts at 35)
                 a = list()  # list of memory locations
                 a.append(mem)   # mem loc and all the X float bits are 0.
@@ -88,16 +88,14 @@ with open(fn) as f:
                         pass
                     j += 1
 
-                print(a)
-                    
+                # for each memory location decoded, assign the value 
                 for m in a:
                     sea_port_comp[m] = v
 
-#print(mask)
-print(sea_port_comp)
+#print(sea_port_comp)
 
 # https://stackoverflow.com/questions/4880960/how-to-sum-all-the-values-in-a-dictionary
 
 # Part 2 of the Day 14 puzzle:
 print()
-print('Part 2:  ? ')
+print('Part 2:  What is the sum of all values left in memory after it completes? ', sum(sea_port_comp.values()))
