@@ -5,7 +5,7 @@
 import re
 import collections
 from array import array
-import sys
+import copy
 import itertools
 
 print('Advent of Code 2020')
@@ -62,39 +62,32 @@ with open(fn) as f:
 
                 # now expand Xs into generate all possible values
                 j = 0 # j is string index (starts at 0), i is power of 2 for this digit (starts at 35)
-                mem_locations = list()
-                powers_of_two = list()
-                m = mem
+                a = list()  # list of memory locations
+                a.append(mem)   # that is all the X float bits are 0.
+                b = list()  # helper object
                 for i in reversed(range(0,36)):
+                    t = mem
+                    b.clear()
+                    b = copy.deepcopy(a)
                     if j==35:
                         s = mask[35:]
                     else:
                         s = mask[j:j+1]
                     if s =='X':
-                        powers_of_two.append(i)
+                        for item in b:
+                            # set bit to a 1
+                            t |= 0x1 << i
+                            if t not in a:
+                                a.append(t)
+                            # set bit to a 0
+                            t &= ~(0x1 << i)
+                            if t not in a:
+                                a.append(t)
                     else:
                         pass
                     j += 1
-
-                # all the locations to which X can float is cartesian product
-                # of the list of locations (powers of two) that have an X in the mask
-                m = mem
-
-                # needed help - need to generate list of all combinations of list items
-                # https://stackoverflow.com/questions/464864/how-to-get-all-possible-combinations-of-a-list-s-elements
-                # https://docs.python.org/3/library/itertools.html#itertools.combinations
-                x = list(itertools.combinations(powers_of_two, len(powers_of_two)))
-                for i in x:
-                    t = mem
-                    for j in i:
-                        # set bit to a 1
-                        t |= 0x1 << j
-                        mem_locations.append(t)
-                        # set bit to a 0
-                        t &= ~(0x1 << j)
-                        mem_locations.append(t)
                     
-                for m in mem_locations:
+                for m in a:
                     sea_port_comp[m] = v
 
 #print(mask)
