@@ -44,4 +44,4 @@ I was on right track, but I couldn't get the T-SQL code compute right answer.  R
 
 * Best: Day 5 Binary Boarding was the puzzle I liked the best so far.
 
-* I found the Day 10 Adapter Array puzzle the most difficult so far.
+* I found the Day 10 Adapter Array puzzle the most difficult so far, to Day 15.
