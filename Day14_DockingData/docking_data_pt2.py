@@ -63,18 +63,19 @@ with open(fn) as f:
                 # now expand Xs into generate all possible values
                 j = 0 # j is string index (starts at 0), i is power of 2 for this digit (starts at 35)
                 a = list()  # list of memory locations
-                a.append(mem)   # that is all the X float bits are 0.
-                b = list()  # helper object
+                a.append(mem)   # mem loc and all the X float bits are 0.
+                b = list()  # helper list
                 for i in reversed(range(0,36)):
                     t = mem
                     b.clear()
-                    b = copy.deepcopy(a)
+                    b = copy.deepcopy(a)   # pretty sure not allowed to mod an obj iterated over
                     if j==35:
                         s = mask[35:]
                     else:
                         s = mask[j:j+1]
                     if s =='X':
                         for item in b:
+                            t = item
                             # set bit to a 1
                             t |= 0x1 << i
                             if t not in a:
@@ -86,6 +87,8 @@ with open(fn) as f:
                     else:
                         pass
                     j += 1
+
+                print(a)
                     
                 for m in a:
                     sea_port_comp[m] = v
