@@ -56,26 +56,28 @@ while True:
     # consider the last number spoken: is it first time it's been spoken
     # count items in a list:  https://stackoverflow.com/questions/2600191/how-can-i-count-the-occurrences-of-a-list-item
     if last_number_spoken in numbers_score_board and numbers_score_board[last_number_spoken] == 1:
-        last_number_spoken = 0
-        old, old_old = numbers[last_number_spoken]
-        numbers[last_number_spoken] = (t, old)
-        numbers_score_board[0] += 1
+        new_nbr = 0
+        old, old_old = numbers[new_nbr]
+        numbers[new_nbr] = (t, old)
+        numbers_score_board[new_nbr] += 1
     else:
         #  next number is diff between last time number was spoken and time before that
 
         i2, i3 = numbers[last_number_spoken] #i2 = last turn, i3 prev last turn
 
-        last_number_spoken = i2 - i3
+        new_nbr = i2 - i3
 
-        if last_number_spoken in numbers:
-            old, old_old = numbers[last_number_spoken]
-            numbers[last_number_spoken] = (t, old)
-            numbers_score_board[last_number_spoken] += 1
+        if new_nbr in numbers:
+            old, old_old = numbers[new_nbr]
+            numbers[new_nbr] = (t, old)
+            numbers_score_board[new_nbr] += 1
         else:
-            numbers[last_number_spoken] = (t, 0)
-            numbers_score_board[last_number_spoken] = 1     
+            numbers[new_nbr] = (t, 0)
+            numbers_score_board[new_nbr] = 1  
 
-    print(last_number_spoken)
+    last_number_spoken = new_nbr   
+
+    print(new_nbr)
 
     if t >= nth_number_spoken:
         break
