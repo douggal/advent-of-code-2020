@@ -1,19 +1,19 @@
 #   Advent of Code 2020  Day 15 Rambunctious Recitation https://adventofcode.com
 #   Created 12/23/2020
 
-# part 1 what is the 2020th number spoken?
+# Part 2 what is the 30 000 000th number spoken?
 
 import collections
 
 print('Advent of Code 2020')
 print('--- Day 15: Rambunctious Recitation ---')
-print()
+print('Part 2')
 
 # 12/23/2020 (dg) let's try a dictionary object first
 # Some day is very efficient at finding item in dictionary
 # https://stackoverflow.com/questions/2701173/most-efficient-way-for-a-lookup-search-in-a-huge-list-python
 
-#start_string = "0,3,6".split(',')
+start_string = "0,3,6".split(',')
 #start_string = "1,3,2".split(',')
 #start_string = "2,1,3".split(',')
 #start_string = "1,2,3".split(',')
@@ -22,13 +22,13 @@ print()
 #start_string = "3,1,2".split(',')
 
 # official input
-start_string = "6,3,15,13,1,0".split(',')
+#start_string = "6,3,15,13,1,0".split(',')
 
 start_numbers = []
 for s in start_string:
     start_numbers.append(int(s))
 
-nth_number_spoken = 2020
+nth_number_spoken = 30000000
 numbers = []
 
 # begin with starting numbers
@@ -75,6 +75,6 @@ while True:
 
 #print(numbers)
 
-# Part 1 of the Day 15 puzzle:
+# Part 2 of the Day 15 puzzle:
 print()
-print('Day 15 Part 1:  given starting numbers the 2020th number spoken will be?', numbers[-1])
+print('Day 15 Part 2:  given starting numbers the 30 000 000th number spoken will be?', numbers[-1])
