@@ -3,7 +3,15 @@
 
 # Part 2 what is the 30 000 000th number spoken?
 
+# changes from Pt 1:
+# can't use "count" method on numbers list - too slow
+#   improvement:  create a dict of numbers and record counts
+#   improvement:  change numbers  to a dict  and  number spoken is key, value is turn
+
+
+
 import collections
+from datetime import datetime
 
 print('Advent of Code 2020')
 print('--- Day 15: Rambunctious Recitation ---')
@@ -28,53 +36,61 @@ start_numbers = []
 for s in start_string:
     start_numbers.append(int(s))
 
+#nth_number_spoken = 2020 
 nth_number_spoken = 30000000
-numbers = []
+numbers = {}   # contains tuples.  number spoken is key, value is (turn, prev turn)
+numbers_score_board = {}
 
 # begin with starting numbers
 for i in range(0, len(start_numbers)):
-    numbers.append(start_numbers[i])
+    numbers[start_numbers[i]] = (i+1, 0)  # value tuple (turn, last turn this number was spoken)
+    numbers_score_board[start_numbers[i]] = 1
 
 # play game
-i = 0  # count iterations to prevent runaway loop
-last_number_spoken = numbers[-1]
-i2 = 0  # idx last number spoken prior
-i3 = 0  # idx last number spoken 2x prior
-while True:
+last_number_spoken = start_numbers[-1]
+print('Start ', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
+t = 0   # Turn
+while True:
+    t += 1
     # consider the last number spoken: is it first time it's been spoken
     # count items in a list:  https://stackoverflow.com/questions/2600191/how-can-i-count-the-occurrences-of-a-list-item
-    if numbers.count(last_number_spoken) == 1:
-        numbers.append(0)  # last number was a new number so a 0 is appended
+    if last_number_spoken in numbers_score_board and numbers_score_board[last_number_spoken] == 1:
+        old, old_old = numbers[last_number_spoken]
+        numbers[last_number_spoken] = (t, old)
+        numbers_score_board[0] += 1
+        last_number_spoken = 0
     else:
         #  next number is diff between last time number was spoken and time before that
-        # minus 2 - don't count what we just added
-        j = len(numbers)
-        found = False
-        while True:
-            j -= 1
-            if numbers[j] == last_number_spoken and not found:
-                found = True
-                i2 = j
-            elif numbers[j] == last_number_spoken and found:
-                i3 = j
-                break
-            elif j == 0:
-                break
 
-        numbers.append(i2 - i3)
+        i2, i3 = numbers[last_number_spoken] #i2 = last turn, i3 prev last turn
 
-    last_number_spoken = numbers[-1]
+        last_number_spoken = i2 - i3
 
-    if len(numbers) >= nth_number_spoken:
+        if last_number_spoken in numbers:
+            old, old_old = numbers[last_number_spoken]
+            numbers[last_number_spoken] = (t, old)
+        else:
+            numbers[last_number_spoken] = (t, 0)
+
+        if last_number_spoken in numbers_score_board:
+            numbers_score_board[last_number_spoken] += 1
+        else:
+            numbers_score_board[last_number_spoken] = 1
+        
+
+    if t >= nth_number_spoken:
         break
 
-    i += 1
-    if i > 1e6:
+    if t % 2.5e5 == 0:
+        print(t,datetime.now().strftime('%H:%M:%S'), last_number_spoken, sep=',')
+    if i > 1e8:
         break
+
+print('Finish ', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 #print(numbers)
 
 # Part 2 of the Day 15 puzzle:
 print()
-print('Day 15 Part 2:  given starting numbers the 30 000 000th number spoken will be?', numbers[-1])
+print('Day 15 Part 2:  given starting numbers the 30 000 000th number spoken will be?', last_number_spoken)
