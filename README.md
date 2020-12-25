@@ -25,6 +25,9 @@ My solution to each day's puzzles is in its own folder.  Programming language an
 
 ### Notes
 
+* Day 15 Part 2 - rewrote Part 1 naive solution from list() datatype
+to Python dict for Part 2. The Advent of Code About page says all puzzles have solutions that run in 15 sec or less on 10 year old hardware.  I didn't meet that standard.
+
 * Day 12 Part 1 - pass, Part 2 - pass.  Refactored code to improve it, but
 still had to create additional test data.  Finally found the bug.  It was
 in the rotation code.  I had assume R90 was good but it wasn't.

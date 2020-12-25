@@ -36,8 +36,8 @@ start_numbers = []
 for s in start_string:
     start_numbers.append(int(s))
 
-#nth_number_spoken = 2020 
-nth_number_spoken = 30000000
+nth_number_spoken = 2020 
+#nth_number_spoken = 30000000
 numbers = {}   # contains tuples.  number spoken is key, value is (turn, prev turn)
 numbers_score_board = {}
 
@@ -50,16 +50,16 @@ for i in range(0, len(start_numbers)):
 last_number_spoken = start_numbers[-1]
 print('Start ', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
-t = 0   # Turn
+t = len(start_numbers)   # Turns
 while True:
     t += 1
     # consider the last number spoken: is it first time it's been spoken
     # count items in a list:  https://stackoverflow.com/questions/2600191/how-can-i-count-the-occurrences-of-a-list-item
     if last_number_spoken in numbers_score_board and numbers_score_board[last_number_spoken] == 1:
+        last_number_spoken = 0
         old, old_old = numbers[last_number_spoken]
         numbers[last_number_spoken] = (t, old)
         numbers_score_board[0] += 1
-        last_number_spoken = 0
     else:
         #  next number is diff between last time number was spoken and time before that
 
@@ -70,14 +70,12 @@ while True:
         if last_number_spoken in numbers:
             old, old_old = numbers[last_number_spoken]
             numbers[last_number_spoken] = (t, old)
-        else:
-            numbers[last_number_spoken] = (t, 0)
-
-        if last_number_spoken in numbers_score_board:
             numbers_score_board[last_number_spoken] += 1
         else:
-            numbers_score_board[last_number_spoken] = 1
-        
+            numbers[last_number_spoken] = (t, 0)
+            numbers_score_board[last_number_spoken] = 1     
+
+    print(last_number_spoken)
 
     if t >= nth_number_spoken:
         break
@@ -89,7 +87,7 @@ while True:
 
 print('Finish ', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
-#print(numbers)
+print(numbers)
 
 # Part 2 of the Day 15 puzzle:
 print()
