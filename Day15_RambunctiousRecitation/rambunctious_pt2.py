@@ -3,10 +3,14 @@
 
 # Part 2 what is the 30 000 000th number spoken?
 
+# 12/23/2020 (dg) let's try a dictionary object first
+# Some day is very efficient at finding item in dictionary
+# https://stackoverflow.com/questions/2701173/most-efficient-way-for-a-lookup-search-in-a-huge-list-python
+
 # changes from Pt 1:
 # can't use "count" method on numbers list - too slow
-#   improvement:  create a dict of numbers and record counts
 #   improvement:  change numbers  to a dict  and  number spoken is key, value is turn
+#   improvement:  create a 2nd dict to keep track of how many times each number was called
 
 
 
@@ -17,11 +21,8 @@ print('Advent of Code 2020')
 print('--- Day 15: Rambunctious Recitation ---')
 print('Part 2')
 
-# 12/23/2020 (dg) let's try a dictionary object first
-# Some day is very efficient at finding item in dictionary
-# https://stackoverflow.com/questions/2701173/most-efficient-way-for-a-lookup-search-in-a-huge-list-python
 
-start_string = "0,3,6".split(',')
+#start_string = "0,3,6".split(',')
 #start_string = "1,3,2".split(',')
 #start_string = "2,1,3".split(',')
 #start_string = "1,2,3".split(',')
@@ -30,14 +31,14 @@ start_string = "0,3,6".split(',')
 #start_string = "3,1,2".split(',')
 
 # official input
-#start_string = "6,3,15,13,1,0".split(',')
+start_string = "6,3,15,13,1,0".split(',')
 
 start_numbers = []
 for s in start_string:
     start_numbers.append(int(s))
 
-nth_number_spoken = 2020 
-#nth_number_spoken = 30000000
+#nth_number_spoken = 2020 
+nth_number_spoken = 30000000
 numbers = {}   # contains tuples.  number spoken is key, value is (turn, prev turn)
 numbers_score_board = {}
 
@@ -49,6 +50,10 @@ for i in range(0, len(start_numbers)):
 # play game
 last_number_spoken = start_numbers[-1]
 print('Start ', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+if not 0 in numbers_score_board:
+    numbers[0] = (0,0)  # account for 0 if not present
+    numbers_score_board[0] = 0
 
 t = len(start_numbers)   # Turns
 while True:
@@ -77,19 +82,20 @@ while True:
 
     last_number_spoken = new_nbr   
 
-    print(new_nbr)
+    #print(new_nbr)
 
     if t >= nth_number_spoken:
         break
 
-    if t % 2.5e5 == 0:
+    if t % 3e6 == 0:
         print(t,datetime.now().strftime('%H:%M:%S'), last_number_spoken, sep=',')
-    if i > 1e8:
+    if t > 31e6:
+        print('Error runaway loop')
         break
 
 print('Finish ', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
-print(numbers)
+#print(numbers)
 
 # Part 2 of the Day 15 puzzle:
 print()
