@@ -20,10 +20,13 @@ My solution to each day's puzzles is in its own folder.  Programming language an
 12. Day 12:  Rain Risk (Python, macOS)
 13. Day 13:  Shuttle Search (Python, macOS)
 14. Day 14:  Docking Data (Python, macOS)
-15. Day 15:  
-
+15. Day 15:  Rambunctious Recitation (Python, macOS)
+16. Day 16:  
 
 ### Notes
+
+* Day 15 Part 2 - rewrote Part 1 naive solution from list() datatype
+to Python dict for Part 2. The Advent of Code About page says all puzzles have solutions that run in 15 sec or less on 10 year old hardware.  I didn't meet that standard.
 
 * Day 12 Part 1 - pass, Part 2 - pass.  Refactored code to improve it, but
 still had to create additional test data.  Finally found the bug.  It was
@@ -44,4 +47,4 @@ I was on right track, but I couldn't get the T-SQL code compute right answer.  R
 
 * Best: Day 5 Binary Boarding was the puzzle I liked the best so far.
 
-* I found the Day 10 Adapter Array puzzle the most difficult so far.
+* I found the Day 10 Adapter Array puzzle the most difficult so far, to Day 15.
