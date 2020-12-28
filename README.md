@@ -34,10 +34,10 @@ in the rotation code.  I had assume R90 was good but it wasn't.
 [subreddit](https://www.reddit.com/r/adventofcode/comments/kbj5me/2020_day_12_solutions/)
 
 * Day 10 Part 1 - pass, Part 2 - pass.  After much failure and re-thinking I finally got a working program
-for Part 2.  I drew a picture of the sample data with paper and pencil and finally realized the 
+for Part 2.  I drew a picture of the sample data with paper and pencil and finally realized the
 adapter array is not an acyclic directed graph but a directed graph.  
-With right picture implementing a recursive algorithm walk the 
-tree [Wikipedia](https://en.wikipedia.org/wiki/Directed_graph) was straightforward 
+With right picture implementing a recursive algorithm walk the
+tree [Wikipedia](https://en.wikipedia.org/wiki/Directed_graph) was straightforward
 and soon the program was delivering the right answers with test data.  Last problem to solve was how
 to make the process more efficient with the full data set, and it didn't take too much longer, with picture in hand, to
 see a Dictionary object collecting each adapter with its sum of connections going forward would cut the problem down to size.
