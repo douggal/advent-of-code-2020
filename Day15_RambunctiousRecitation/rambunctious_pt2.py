@@ -16,6 +16,7 @@
 
 import collections
 from datetime import datetime
+import numpy as np
 
 print('Advent of Code 2020')
 print('--- Day 15: Rambunctious Recitation ---')
@@ -94,6 +95,34 @@ while True:
         break
 
 print('Finish ', datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+
+
+# 12/28/2020 is there an invariant in the algorithm?  Maybe don't need to run it 30e6 times?
+
+sqls = "PuzzleOutputNbrsSpoken.txt"
+with open(sqls, 'w') as output:
+    for n in numbers_score_board:
+        output.write(str(n) + ', ' + str(numbers_score_board[n]) + '\n')
+
+
+#https://stackoverflow.com/questions/15579649/python-dict-to-numpy-structured-array
+
+# names = ['n','cnt']
+# formats = ['i','i']
+# dtype = dict(names = names, formats=formats)
+# a = np.array(list(numbers_score_board.items()), dtype=dtype)
+# print('Min', np.min(a, axis=2))
+# print('Max', np.max(a, axis=2))
+# print('Count', np.count(a))
+
+# https://stackoverflow.com/questions/3518778/how-do-i-read-csv-data-into-a-record-array-in-numpy
+from numpy import genfromtxt
+my_data = genfromtxt('PuzzleOutputNbrsSpoken.txt', delimiter=',')
+print('Min', np.min(my_data))
+print('Max', np.max(my_data))
+print('Count', len(numbers_score_board))
+
 
 #print(numbers)
 
